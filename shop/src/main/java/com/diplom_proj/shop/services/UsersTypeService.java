@@ -5,6 +5,8 @@ import com.diplom_proj.shop.repository.UsersTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UsersTypeService {
     private final UsersTypeRepository usersTypeRepository;
@@ -23,5 +25,8 @@ public class UsersTypeService {
         Roles role = new Roles();
         role.setUserTypeId(roleName);
         return usersTypeRepository.save(role);
+    }
+    public List<Roles>getAll(){
+        return usersTypeRepository.findAll();
     }
 }
