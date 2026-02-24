@@ -24,8 +24,12 @@ public class WebSecurityConfig {
     }
 
     private final String[] publicUrl = {"/",
+            "/css/**",
+            "/*.css",
+            "/webjars/**",
             "/register",
-            "/register/**"
+            "/register/**",
+            "/error"
     };
 
     @Bean

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css} "/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/Registration.css}"/>
+    <title>Registration</title>
+</head>
+<body>
+<h1>Register(H1)</h1>
+<section class="content hidden-overflow">
+    <div class="row">
+        <div class="col-6">
+            <div class="top-margin">
+                <div>
+                    <div>
+                        <h1>Create User Account</h1>
+                    </div>
+                    <div class="myForm">
+                        <form
+                                th:action="@{/register/new}"
+                                th:object="${user}"
+                                method="post"
+                        >
+                            <div class="box-body bozero mx2p">
+
+                                <!-- Error message display -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div th:if="${error}" class="alert alert-danger" role="alert">
+                                                <p th:text="${error}"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End error message display -->
+
+                                <div class=" row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <!--                                            Ввод email-->
+                                            <input
+                                                    placeholder="Email"
+                                                    name="email"
+                                                    th:field="*{email}"
+                                                    type="email"
+                                                    class="form-control"
+                                                    required
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=" row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <!--                                            Ввод email-->
+                                            <input
+                                                    placeholder="PhoneNumber"
+                                                    name="phoneNumber"
+                                                    th:field="*{phoneNumber}"
+                                                    type="tel"
+                                                    class="form-control"
+                                                    required
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <!--                                            Ввод пароля-->
+                                            <input
+                                                    min="8"
+                                                    placeholder="Password"
+                                                    name="password"
+                                                    th:field="*{password}"
+                                                    type="password"
+                                            />
+<!--                                                    required-->
+<!--                                                    class="form-control pwd"-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <div class="row">
+                                    <div class="form-group mt-5 col-md-12">
+                                        <button type="submit">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

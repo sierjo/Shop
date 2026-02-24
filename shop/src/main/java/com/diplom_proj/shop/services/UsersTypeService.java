@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsersTypeService {
@@ -26,7 +27,10 @@ public class UsersTypeService {
         role.setUserTypeId(roleName);
         return usersTypeRepository.save(role);
     }
-    public List<Roles>getAll(){
+    public List<Roles> getAll() {
         return usersTypeRepository.findAll();
+    }
+    public Optional<Roles> getKlientRole() {
+        return usersTypeRepository.findById(1);
     }
 }

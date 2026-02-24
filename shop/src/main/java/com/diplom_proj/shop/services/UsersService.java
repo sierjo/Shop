@@ -1,34 +1,40 @@
 package com.diplom_proj.shop.services;
 
+import com.diplom_proj.shop.entity.Roles;
 import com.diplom_proj.shop.entity.Users;
 import com.diplom_proj.shop.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 @Service
 public class UsersService {
     private final UsersRepository usersRepository;
+    private final UsersTypeService usersTypeService;
     //add PasswordEncoder
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsersService(UsersRepository usersRepository, PasswordEncoder passwordEncoder) {
+    public UsersService(UsersRepository usersRepository, UsersTypeService usersTypeService, PasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
+        this.usersTypeService = usersTypeService;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Users addNew(Users user) {
+    public Users addNewKlien(Users user) {
         user.setActive(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        Users saveUser = usersRepository.save(user);
+
+        Roles klientRole = usersTypeService.getKlientRole().orElseThrow(() -> new RuntimeException("Роль Klient не найдена в базе!"));
+        user.setRoleId(klientRole);
+        user.setEmail(user.getEmail());
+        user.setPhoneNumber(user.getPhoneNumber());
         usersRepository.save(user);
-//        // Сохранение выбранной роли
-//        int userRoleId = user.getRoleId().getUserTypeId();
-//        if (userRoleId==1){
-//
-//        }
         return user;
     }
 
+    public Optional<Users> getUserByEmail(String email) {
+        return usersRepository.findByEmail(email);
+    }
 }

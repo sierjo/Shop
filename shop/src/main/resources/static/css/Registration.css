@@ -1,3 +1,27 @@
 .back_color{
     background-color: #1f622a;
 }
+.myForm {
+    display: flex;
+    padding: 20px 0;
+    overflow-y: auto;
+    justify-content: center;
+}
+.myForm > form {
+    width: 80%;
+    height: 50%;
+}
+.myForm > form input {
+    padding: 15px 10px;
+    margin: 4px 0;
+    line-height: 140%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+section.section {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    height: calc(100% - 80px);
+}
