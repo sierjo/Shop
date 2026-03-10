@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/Shop.css}"/>
+    <title>Products</title>
+</head>
+<body>
+<h2>Products</h2>
+<section>
+    <div>
+        <form th:action="@{/products/add}"
+              th:object="${product}"
+              method="post"
+              enctype="multipart/form-data">
+            <!-- Error message display -->
+            <div class="box-form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div th:if="${error}" class="alert alert-danger" role="alert">
+                                <p th:text="${error}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End error message display -->
+                <div class=" row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <!--                                            Ввод email-->
+                            <input
+                                    placeholder="Name"
+                                    name="productName"
+                                    th:field="*{productName}"
+                                    type="text"
+                                    class="form-control"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class=" row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <!--                                            Ввод email-->
+                            <input
+                                    placeholder="Description"
+                                    name="productDescription"
+                                    th:field="*{productDescription}"
+                                    type="text"
+                                    class="form-control"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class=" row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <!--                                            Ввод email-->
+                            <input
+                                    placeholder="Price"
+                                    name="productPrice"
+                                    th:field="*{productPrice}"
+                                    type="text"
+                                    class="form-control"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class=" row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <!--                                            Ввод email-->
+                            <input
+                                    placeholder="Quantity"
+                                    name="productQuantity"
+                                    th:field="*{productQuantity}"
+                                    type="number"
+                                    class="form-control"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class=" row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <!--                                            Ввод email-->
+                            <input
+                                    name="filename"
+                                    type="file"
+                                    accept="image/*"
+                                    class="form-control"
+                            />
+<!--                                    th:field="*{productsPhoto}"-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group mt-5 col-md-12">
+                    <button type="submit">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<script type="text/javascript" th:src="@{/}"></script>
+
+</body>
+
+</html>

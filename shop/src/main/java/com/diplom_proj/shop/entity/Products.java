@@ -21,7 +21,7 @@ public class Products {
     @Column(name = "stock_quantity")
     private Integer productQuantity;
     @Column(nullable = true, length = 64)
-    private String productsPhoto;
+    private String productPhoto;
 
     @OneToMany(targetEntity = CartsItem.class, mappedBy = "product", cascade = CascadeType.ALL)
     private List<CartsItem> cartsItems = new ArrayList<>();
@@ -33,13 +33,13 @@ public class Products {
     public Products() {
     }
 
-    public Products(Integer productId, String productName, String productDescription, Integer productPrice, Integer productQuantity, String productsPhoto, List<CartsItem> cartsItems, List<OrderItems> orderItems, List<FavoriteProducts> favoriteProducts) {
+    public Products(Integer productId, String productName, String productDescription, Integer productPrice, Integer productQuantity, String productPhoto, List<CartsItem> cartsItems, List<OrderItems> orderItems, List<FavoriteProducts> favoriteProducts) {
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
         this.productPrice = productPrice;
         this.productQuantity = productQuantity;
-        this.productsPhoto = productsPhoto;
+        this.productPhoto = productPhoto;
         this.cartsItems = cartsItems;
         this.orderItems = orderItems;
         this.favoriteProducts = favoriteProducts;
@@ -85,12 +85,12 @@ public class Products {
         this.productQuantity = productQuantity;
     }
 
-    public String getProductsPhoto() {
-        return productsPhoto;
+    public String getProductPhoto() {
+        return productPhoto;
     }
 
-    public void setProductsPhoto(String productsPhoto) {
-        this.productsPhoto = productsPhoto;
+    public void setProductPhoto(String productsPhoto) {
+        this.productPhoto = productsPhoto;
     }
 
     public List<CartsItem> getCartsItems() {
@@ -125,7 +125,7 @@ public class Products {
                 ", productDescription='" + productDescription + '\'' +
                 ", productPrice=" + productPrice +
                 ", productQuantity=" + productQuantity +
-                ", productsPhoto='" + productsPhoto + '\'' +
+                ", productPhoto='" + productPhoto + '\'' +
                 ", cartsItems=" + cartsItems +
                 ", orderItems=" + orderItems +
                 ", favoriteProducts=" + favoriteProducts +

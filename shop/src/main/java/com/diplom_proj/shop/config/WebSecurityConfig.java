@@ -28,6 +28,7 @@ public class WebSecurityConfig {
             "/*.css",
             "/webjars/**",
             "/register",
+            "/products/**",
             "/register/**",
             "/error"
     };
