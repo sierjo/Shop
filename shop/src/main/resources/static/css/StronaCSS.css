@@ -1,0 +1,50 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body {
+    padding: 20px;
+    background-color: #f9f9f9;
+    font-family: sans-serif;
+}
+
+/* Наш главный каркас (Шапка, Сайдбар, Контент) */
+.layout-container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 15px;
+    min-height: 90vh;
+}
+
+/* Рамки для главных блоков, как на вашем рисунке */
+.header, .sidebar, .content {
+    border: 2px solid black;
+    background-color: white;
+    padding: 20px;
+}
+
+.header {
+    grid-column: 1 / -1;
+    display: flex; /* Делаем логотип и меню в одну линию */
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* --- Стили для внутренностей --- */
+
+/* Внутренняя сетка для самих карточек товаров */
+.products-grid {
+    display: flex;
+    flex-wrap: wrap; /* Разрешаем карточкам переноситься на новую строку */
+    gap: 20px;
+    margin-top: 15px;
+}
+
+/* Стилизация тега <article> (карточки товара) */
+.product-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    width: 220px;
+    text-align: center;
+    border-radius: 8px; /* Немного скруглим углы для красоты */
+}

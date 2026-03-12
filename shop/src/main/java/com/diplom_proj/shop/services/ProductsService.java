@@ -4,6 +4,7 @@ import com.diplom_proj.shop.entity.Products;
 import com.diplom_proj.shop.repository.ProductsRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,5 +29,8 @@ public class ProductsService {
 
     public Optional<Products> getByProductName(String name) {
         return productsRepository.findByProductName(name);
+    }
+    public List<Products> getAll(){
+        return productsRepository.findAll(); // Get all products from database
     }
 }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/StronaCSS.css}"/>
+    <title>Title</title>
+</head>
+<body>
+<div class="layout-container">
+
+    <header class="header">
+        <h2>Логотип</h2>
+        <nav class="main-menu">
+            <a href="/strona">Каталог</a>
+            <a href="/login">Войти</a>
+        </nav>
+    </header>
+    <!------------------------------------------------------------------------------->
+    <aside class="sidebar">
+        <section class="filters">
+            <h3>Категории</h3>
+            <ul>
+                <li>Ноутбуки</li>
+                <li>Телефоны</li>
+            </ul>
+        </section>
+    </aside>
+    <!------------------------------------------------------------------------------->
+    <main class="content">
+
+        <section class="products-catalog">
+            <h2>Список товаров</h2>
+
+            <div th:each="product : ${products}" class="products-grid">
+                <article class="product-card">
+                    <img th:if="${product.productPhoto != null}"
+                         th:src="@{'/photos/products/' + ${product.productId} + '/' + ${product.productPhoto}}"
+                         alt="Product Image"
+                         style="max-width: 100%; height: 200px; object-fit: cover;"/>
+
+                    <img th:unless="${product.productPhoto != null}"
+                         th:src="@{/images/no-image.png}"
+                         alt="No Image"
+                         style="max-width: 100%; height: 200px; object-fit: cover;"/>
+
+                    <h3 th:text="${product.productName}">Название товара</h3>
+                    <p th:text="${product.productDescription}">Описание</p>
+                    <h4 style="color: green;" th:text="${product.productPrice} + ' PLN'">Цена</h4>
+
+                    <button>Купить</button>
+                </article>
+            </div>
+
+        </section>
+
+    </main>
+</div>
+</body>
+</html>
