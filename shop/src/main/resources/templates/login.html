@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<form th:action="@{/login}" th:object="${user}" method="post">
+    <h1>Login</h1>
+    <div class="#">
+        <input
+                name="username"
+                placeholder="Email"
+                type="email"
+                class="#"
+                required/>
+    </div>
+    <div class="#">
+        <input
+                name="password"
+                placeholder="Password"
+                type="password"
+                class="#"
+                required/>
+    </div>
+    <div class="#">
+        <label class="#"
+        ><input type="checkbox"/> Remember me</label>
+        <a href="#" class="#">Forgot Password?</a>
+    </div>
+    <div class="#">
+        <button type="submit" class="#">Log in</button>
+    </div>
+
+    <p class="#">
+        Are you a new User?
+        <a
+                class="#"
+                href="#"
+                th:href="@{/register}">
+            Register Now</a>
+    </p>
+</form>
+</body>
+</html>

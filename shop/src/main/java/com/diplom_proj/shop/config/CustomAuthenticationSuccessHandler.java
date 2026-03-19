@@ -18,10 +18,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         String username = userDetails.getUsername();
         System.out.println("The username " + username + " is logged in.");
         boolean hasKlientRole = authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("Klient"));
+        boolean hasAnonymousRole = authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_ANONYMOUS"));
         boolean hasMagazynierRole = authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("Magazynier"));
         boolean hasSprzedawcaRole = authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("Sprzedawca"));
-        if (hasKlientRole || hasMagazynierRole || hasSprzedawcaRole) {
-            response.sendRedirect("home");
+        if (hasKlientRole || hasAnonymousRole || hasMagazynierRole || hasSprzedawcaRole) {
+            response.sendRedirect("/strona");
         }
     }
 }

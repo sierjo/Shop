@@ -49,4 +49,9 @@ public class UsersController {
         return "home";
     }
 
+    @GetMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("user", new Users());
+        return "login";
+    }
 }

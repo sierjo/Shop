@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -26,11 +27,13 @@ public class WebSecurityConfig {
     private final String[] publicUrl = {"/",
             "/css/**",
             "/photos/**",
+            "/icons/**",
             "/*.css",
             "/webjars/**",
             "/register",
             "/products/**",
             "/register/**",
+            "/login/**",
             "/error",
             "/strona"
     };
@@ -46,7 +49,15 @@ public class WebSecurityConfig {
             auth.anyRequest().authenticated();
         });
 
-        // ... остальные настройки (formLogin и т.д.)
+        //Configure custom login page and success handler
+        http.formLogin(form -> form
+                        .loginPage("/login").permitAll()
+                        .successHandler(customAuthenticationSuccessHandler))
+                .logout(logout -> {
+                    logout.logoutUrl("/logout");
+                    logout.logoutSuccessUrl("/strona");
+                }).cors(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }

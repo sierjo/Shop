@@ -8,7 +8,7 @@ body {
     font-family: sans-serif;
 }
 
-/* Наш главный каркас (Шапка, Сайдбар, Контент) */
+/* Шапка, Сайдбар, Контент */
 .layout-container {
     display: grid;
     grid-template-columns: 250px 1fr;
@@ -16,7 +16,7 @@ body {
     min-height: 90vh;
 }
 
-/* Рамки для главных блоков, как на вашем рисунке */
+/* Рамки */
 .header, .sidebar, .content {
     border: 2px solid black;
     background-color: white;
@@ -25,26 +25,66 @@ body {
 
 .header {
     grid-column: 1 / -1;
-    display: flex; /* Делаем логотип и меню в одну линию */
+    display: flex; /* Логотип и меню в одну линию */
     justify-content: space-between;
     align-items: center;
 }
 
-/* --- Стили для внутренностей --- */
 
 /* Внутренняя сетка для самих карточек товаров */
 .products-grid {
     display: flex;
-    flex-wrap: wrap; /* Разрешаем карточкам переноситься на новую строку */
+    flex-wrap: wrap; /* Карточки переносятся на новую строку */
     gap: 20px;
     margin-top: 15px;
 }
 
-/* Стилизация тега <article> (карточки товара) */
+/* Стилизация карточки товара */
 .product-card {
     border: 1px solid #ddd;
     padding: 15px;
     width: 220px;
     text-align: center;
-    border-radius: 8px; /* Немного скруглим углы для красоты */
+    border-radius: 8px; /* rounding corners */
+}
+.productCartImg{
+    max-width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.ImgError{
+    max-width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+.productPrice{
+    color: green;
+}
+
+.loginBox{
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.loginName{
+    font-weight: bold;
+    margin-right: 10px;
+}
+.userLogout{
+    color: red
+}
+
+/* Changing the icon color to red when hovering over him*/
+.my-custom-icon {
+    fill: black;
+    transition: fill 0.3s;
+}
+
+.my-custom-icon:hover {
+    fill: red;
+}
+
+.icons{
+    text-decoration: none;
 }

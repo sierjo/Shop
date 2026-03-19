@@ -2,12 +2,16 @@ package com.diplom_proj.shop.services;
 
 import com.diplom_proj.shop.entity.Roles;
 import com.diplom_proj.shop.entity.Users;
+import com.diplom_proj.shop.dto.UsersDTO;
 import com.diplom_proj.shop.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
 @Service
 public class UsersService {
     private final UsersRepository usersRepository;
@@ -32,6 +36,16 @@ public class UsersService {
         user.setPhoneNumber(user.getPhoneNumber());
         usersRepository.save(user);
         return user;
+    }
+
+    public UsersDTO dtouser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Optional<Users> user = usersRepository.findByEmail(authentication.getName());
+        UsersDTO usersDTO = new UsersDTO();
+        if (user.isPresent()) {
+            usersDTO.setEmail(user.get().getEmail());
+        }
+        return usersDTO;
     }
 
     public Optional<Users> getUserByEmail(String email) {
