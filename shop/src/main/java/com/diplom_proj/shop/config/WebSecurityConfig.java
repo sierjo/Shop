@@ -8,7 +8,6 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -28,13 +27,12 @@ public class WebSecurityConfig {
             "/css/**",
             "/photos/**",
             "/icons/**",
-            "/*.css",
             "/webjars/**",
             "/register",
-            "/products/**",
             "/register/**",
             "/login/**",
             "/error",
+            "/js/**",
             "/strona"
     };
 
@@ -44,6 +42,10 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests(auth -> {
             // Разрешаем доступ всем (permitAll) к главной странице и другим публичным URL
             auth.requestMatchers(publicUrl).permitAll();
+
+            // Only Magazynier can edit the products / add products
+            auth.requestMatchers("/products/update-product").hasAuthority("Magazynier");
+            auth.requestMatchers("/products/**").hasAuthority("Magazynier");
 
             // Все остальные страницы будут требовать авторизации
             auth.anyRequest().authenticated();

@@ -26,7 +26,7 @@
             <a sec:authorize="isAnonymous()" th:href="@{/login}">Войти</a>
 
             <div sec:authorize="isAuthenticated()" class="loginBox">
-<!--                <span sec:authentication="name"></span>-->
+                <!--                <span sec:authentication="name"></span>-->
                 <span th:text="${currentUser.email}" class="loginName"></span>
 
                 <a th:href="@{/logout}" class="userLogout">Выйти</a>
@@ -58,9 +58,8 @@
     <main class="content">
 
         <section th:each="product : ${products}" class="products-catalog">
-            <h2>Список товаров</h2>
 
-            <div class="products-grid">
+            <div class="products-grid" sec:authorize="hasAnyAuthority('Klient','ROLE_ANONYMOUS')">
                 <article class="product-card">
                     <img th:if="${product.productPhoto != null}"
                          th:src="@{'/photos/products/' + ${product.productId} + '/' + ${product.productPhoto}}"
@@ -76,13 +75,58 @@
                     <p th:text="${product.productDescription}">Описание</p>
                     <h4 class="productPrice" th:text="${product.productPrice} + ' PLN'">Цена</h4>
 
-                    <button>Купить</button>
+                    <div sec:authorize="hasAnyAuthority('Klient','ROLE_ANONYMOUS')">
+                        <button>купить</button>
+                    </div>
                 </article>
             </div>
 
+            <div class="products-grid" sec:authorize="hasAnyAuthority('Magazynier')">
+
+                <article class="product-card">
+                    <img th:if="${product.productPhoto != null}"
+                         th:src="@{'/photos/products/' + ${product.productId} + '/' + ${product.productPhoto}}"
+                         alt="Product Image"
+                         class="productCartImg"/>
+
+                    <img th:unless="${product.productPhoto != null}"
+                         th:src="@{/images/no-image.png}"
+                         alt="No Image"
+                         class="ImgError"/>
+
+                    <h3 th:id="'name-text-' + ${product.productId}" th:text="${product.productName}">Название</h3>
+                    <input type="text" th:id="'name-input-' + ${product.productId}" class="input-update"
+                           th:value="${product.productName}">
+
+                    <h4 th:id="'price-text-' + ${product.productId}" class="text-button-update"
+                        th:text="${product.productPrice} + ' PLN'">Цена</h4>
+                    <input type="number" step="0.01" th:id="'price-input-' + ${product.productId}" class="input-update"
+                           th:value="${product.productPrice}">
+
+                    <p th:id="'desc-text-' + ${product.productId}" th:text="${product.productDescription}">Описание</p>
+
+                    <textarea class="input-update" th:id="'desc-input-' + ${product.productId}"
+                              th:text="${product.productDescription}"></textarea>
+
+                    <button th:id="'btn-edit-' + ${product.productId}"
+                            th:onclick="'startEdit(' + ${product.productId} + ')'">Изменить
+                    </button>
+
+                    <button class="update-button-save-color" th:id="'btn-save-' + ${product.productId}"
+                            th:onclick="'saveEdit(' + ${product.productId} + ')'"
+                            > Сохранить </button>
+
+                    <button class="update-button-save-color update-button-cancel-color" th:id="'btn-cancel-' + ${product.productId}"
+                            th:onclick="'cancelEdit(' + ${product.productId} + ')'"
+                            > Отмена </button>
+                </article>
+            </div>
         </section>
 
     </main>
+
+
 </div>
+<script th:src="@{/js/editProduct.js}"></script>
 </body>
 </html>

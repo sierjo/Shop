@@ -88,3 +88,22 @@ body {
 .icons{
     text-decoration: none;
 }
+
+.text-button-update{
+    color: green;
+}
+.update-button-save-color{
+    display: none;
+    background-color: green;
+    color: white;
+}
+
+.update-button-cancel-color{
+    background-color: red;
+}
+
+.input-update{
+    display: none;
+    margin-bottom: 5px;
+    width: 100%;
+}
