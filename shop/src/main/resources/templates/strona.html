@@ -13,8 +13,7 @@
         <h2>Логотип</h2>
         <nav class="main-menu">
             <a href="/strona">Каталог</a>
-            <!--            <a href="/favoriteProducts">-->
-            <a href="/products" class="icons">
+            <a href="/products/favoriteProduct" class="icons">
                 <svg class="my-custom-icon" xmlns="http://www.w3.org/2000/svg" width="30" height="29"
                      viewBox="0 0 26.00 25.00" fill="#492f2f"
                      data-guides="{&quot;vertical&quot;:[],&quot;horizontal&quot;:[]}">
@@ -77,6 +76,35 @@
 
                     <div sec:authorize="hasAnyAuthority('Klient','ROLE_ANONYMOUS')">
                         <button>купить</button>
+
+                        <!--<div th:id="'btn-edit-' + ${product.productId} + ${us}" class="add-to-favorite">-->
+                        <div class="add-to-favorite" sec:authorize="hasAnyAuthority('Klient')">
+                            <a href="javascript:void(0);" class="icons"
+                               th:onclick="'addTOFavorite(' + ${product.productId} + ')'">
+
+                                <svg th:id="'fevor-add' + ${product.productId}" class="my-custom-icon" xmlns="http://www.w3.org/2000/svg"
+                                     width="17" height="12"
+                                     viewBox="0 0 26.00 25.00" fill="#492f2f"
+                                     data-guides="{&quot;vertical&quot;:[],&quot;horizontal&quot;:[]}">
+                                    <defs/>
+                                    <path d="M18.14 2.5C20.8827 2.5655 23.5559 5.337 23.5 8.08C23.5 14.28 15.73 20.66 13 22.5C10.27 20.65 2.5 14.27 2.5 8.08C2.4441 5.337 5.1173 2.5655 7.86 2.5C9.2574 2.509 10.6006 2.9304 11.5 4C12.0067 4.6 12.4933 5.4 13 6C13.5067 5.4033 13.9933 4.5967 14.5 4C15.3975 2.9267 16.7409 2.5115 18.14 2.5ZM18.14 1C16.1573 1.0063 14.2777 1.8839 13 3.4C11.7223 1.8839 9.8427 1.0063 7.86 1C4.0104 1.0603 0.9388 4.2304 1 8.08C1 16.92 13 24 13 24C13 24 25 16.92 25 8.08C25.0612 4.2304 21.9896 1.0603 18.14 1Z"/>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="add-to-favorite" sec:authorize="hasAnyAuthority('ROLE_ANONYMOUS')">
+                            <a href="/login" class="icons"
+                               th:onclick="'addTOFavorite(' + ${product.productId} + ')'">
+
+                                <svg th:id="fevor-add" class="my-custom-icon" xmlns="http://www.w3.org/2000/svg"
+                                     width="17" height="12"
+                                     viewBox="0 0 26.00 25.00" fill="#492f2f"
+                                     data-guides="{&quot;vertical&quot;:[],&quot;horizontal&quot;:[]}">
+                                    <defs/>
+                                    <path d="M18.14 2.5C20.8827 2.5655 23.5559 5.337 23.5 8.08C23.5 14.28 15.73 20.66 13 22.5C10.27 20.65 2.5 14.27 2.5 8.08C2.4441 5.337 5.1173 2.5655 7.86 2.5C9.2574 2.509 10.6006 2.9304 11.5 4C12.0067 4.6 12.4933 5.4 13 6C13.5067 5.4033 13.9933 4.5967 14.5 4C15.3975 2.9267 16.7409 2.5115 18.14 2.5ZM18.14 1C16.1573 1.0063 14.2777 1.8839 13 3.4C11.7223 1.8839 9.8427 1.0063 7.86 1C4.0104 1.0603 0.9388 4.2304 1 8.08C1 16.92 13 24 13 24C13 24 25 16.92 25 8.08C25.0612 4.2304 21.9896 1.0603 18.14 1Z"/>
+                                </svg>
+                            </a>
+                        </div>
+                        <p th:id="'error-text' + ${product.productId}"></p>
                     </div>
                 </article>
             </div>
@@ -84,6 +112,8 @@
             <div class="products-grid" sec:authorize="hasAnyAuthority('Magazynier')">
 
                 <article class="product-card">
+
+
                     <img th:if="${product.productPhoto != null}"
                          th:src="@{'/photos/products/' + ${product.productId} + '/' + ${product.productPhoto}}"
                          alt="Product Image"
@@ -114,11 +144,14 @@
 
                     <button class="update-button-save-color" th:id="'btn-save-' + ${product.productId}"
                             th:onclick="'saveEdit(' + ${product.productId} + ')'"
-                            > Сохранить </button>
+                    > Сохранить
+                    </button>
 
-                    <button class="update-button-save-color update-button-cancel-color" th:id="'btn-cancel-' + ${product.productId}"
+                    <button class="update-button-save-color update-button-cancel-color"
+                            th:id="'btn-cancel-' + ${product.productId}"
                             th:onclick="'cancelEdit(' + ${product.productId} + ')'"
-                            > Отмена </button>
+                    > Отмена
+                    </button>
                 </article>
             </div>
         </section>

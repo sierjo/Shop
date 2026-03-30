@@ -45,7 +45,10 @@ public class WebSecurityConfig {
 
             // Only Magazynier can edit the products / add products
             auth.requestMatchers("/products/update-product").hasAuthority("Magazynier");
-            auth.requestMatchers("/products/**").hasAuthority("Magazynier");
+//            auth.requestMatchers("/products/favoriteProduct").hasAuthority("Magazynier");
+
+            // Only Klient can edit the products / add products to favorite Product page
+            auth.requestMatchers("/products/favoriteProduct").hasAuthority("Klient");
 
             // Все остальные страницы будут требовать авторизации
             auth.anyRequest().authenticated();

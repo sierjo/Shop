@@ -1,10 +1,12 @@
 package com.diplom_proj.shop.controller;
 
-import com.diplom_proj.shop.entity.Products;
 import com.diplom_proj.shop.dto.UsersDTO;
+import com.diplom_proj.shop.entity.FavoriteProducts;
+import com.diplom_proj.shop.entity.Products;
 import com.diplom_proj.shop.repository.ProductsRepository;
 import com.diplom_proj.shop.services.ProductsService;
 import com.diplom_proj.shop.services.UsersService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +39,7 @@ public class StronaController {
         // Put this list to model by name "products"
         model.addAttribute("currentUser", user);
         model.addAttribute("products", allProducts);
+        model.addAttribute("favoriteProduct", new FavoriteProducts());
         return "strona";
     }
 
@@ -62,6 +65,29 @@ public class StronaController {
         }
 
         // Ошибка если нет товара
+        return ResponseEntity.badRequest().build();
+    }
+    @PostMapping("/strona/favoriteProduct")
+    @ResponseBody
+    public ResponseEntity<?> favoriteProduct(@RequestParam Integer productId) {
+
+        Optional<Products> optionalProduct = productsRepository.findById(productId);
+
+        if (optionalProduct.isPresent()) {
+
+            // передаём id продукта на сервис и если такого товара нет в избранном вернёт true
+            // transmits the product id on the userService and, if that product is exist on the favorite, usersService.addToFavorite returns false else returns true
+            boolean isAdded = usersService.addToFavorite(productId);
+
+            if (isAdded) {
+                return ResponseEntity.ok().build(); // 200 OK
+            } else {
+                // 409 Conflict (Этот товар уже был добавлен в избранное)
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
+        }
+
+        // 400 Bad Request (Товара с таким ID не существует)
         return ResponseEntity.badRequest().build();
     }
 }

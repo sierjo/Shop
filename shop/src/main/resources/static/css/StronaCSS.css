@@ -107,3 +107,7 @@ body {
     margin-bottom: 5px;
     width: 100%;
 }
+
+.add-to-favorite{
+    text-align: right;
+}
