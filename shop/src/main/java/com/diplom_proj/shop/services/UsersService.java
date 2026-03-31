@@ -65,14 +65,13 @@ public class UsersService {
         // Getting a user through authentication
         Users user = usersRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
-        user.getUserId();
 
         // Выбранный товар
         // That product User put a favorite
         Products product = productsRepository.findById(productId).orElseThrow();
 
 
-        if (favoriteProductRepository.existsByProducts_ProductId(productId)) {
+        if (favoriteProductRepository.existsByUsers_UserIdAndProducts_ProductId(user.getUserId(),productId)) {
             return false; // If it finds the product in database favoriteProductRepository return true ( duplicate ) should return false 'don't push'
         }
 

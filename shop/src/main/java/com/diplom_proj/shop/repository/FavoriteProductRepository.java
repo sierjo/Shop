@@ -9,4 +9,5 @@ public interface FavoriteProductRepository extends JpaRepository<FavoriteProduct
     boolean existsByProducts_ProductId(Integer productId);
 
 
+    boolean existsByUsers_UserIdAndProducts_ProductId(Integer userId, Integer productId);
 }
