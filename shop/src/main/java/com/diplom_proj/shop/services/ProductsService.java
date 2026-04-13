@@ -33,4 +33,7 @@ public class ProductsService {
     public List<Products> getAll(){
         return productsRepository.findAll(); // Get all products from database
     }
+    public Optional<Products> getProduct(int id) {
+        return productsRepository.findById(id);
+    }
 }

@@ -4,6 +4,7 @@ import com.diplom_proj.shop.dto.UsersDTO;
 import com.diplom_proj.shop.entity.FavoriteProducts;
 import com.diplom_proj.shop.entity.Products;
 import com.diplom_proj.shop.repository.ProductsRepository;
+import com.diplom_proj.shop.services.FavoriteProductsServices;
 import com.diplom_proj.shop.services.ProductsService;
 import com.diplom_proj.shop.services.UsersService;
 import org.springframework.http.HttpStatus;
@@ -24,11 +25,13 @@ public class StronaController {
     private final ProductsService productsService;
     private final UsersService usersService;
     private final ProductsRepository productsRepository;
+    private final FavoriteProductsServices favoriteProductsServices;
 
-    public StronaController(ProductsService productsService, UsersService usersService, ProductsRepository productsRepository) {
+    public StronaController(ProductsService productsService, UsersService usersService, ProductsRepository productsRepository, FavoriteProductsServices favoriteProductsServices) {
         this.productsService = productsService;
         this.usersService = usersService;
         this.productsRepository = productsRepository;
+        this.favoriteProductsServices = favoriteProductsServices;
     }
 
     @GetMapping("/strona")
@@ -82,12 +85,33 @@ public class StronaController {
             if (isAdded) {
                 return ResponseEntity.ok().build(); // 200 OK
             } else {
+                boolean deleteProductFromFavorite =favoriteProductsServices.deleteFavoriteUserProduct(productId);
+                if (deleteProductFromFavorite){
+                    return ResponseEntity.status(HttpStatus.CONFLICT).build();
+                }
                 // 409 Conflict (Этот товар уже был добавлен в избранное)
-                return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
         }
 
         // 400 Bad Request (Товара с таким ID не существует)
         return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/products/favoriteProduct/exist")
+    @ResponseBody
+    public ResponseEntity<List<Integer>> favoriteProductExist() {
+
+        List<Integer> favoriteIds = usersService.getAllFUsersProduct();
+
+        if (favoriteIds.isEmpty()) {
+
+            // 409 Conflict (Этот товар уже был добавлен в избранное)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        } else {
+            return ResponseEntity.ok(favoriteIds); // 200 OK
+        }
+//        // 400 Bad Request (Товара с таким ID не существует)
+//        return ResponseEntity.badRequest().build();
     }
 }

@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -71,7 +73,7 @@ public class UsersService {
         Products product = productsRepository.findById(productId).orElseThrow();
 
 
-        if (favoriteProductRepository.existsByUsers_UserIdAndProducts_ProductId(user.getUserId(),productId)) {
+        if (favoriteProductRepository.existsByUsers_UserIdAndProducts_ProductId(user.getUserId(), productId)) {
             return false; // If it finds the product in database favoriteProductRepository return true ( duplicate ) should return false 'don't push'
         }
 
@@ -87,5 +89,41 @@ public class UsersService {
 
     public Optional<Users> getUserByEmail(String email) {
         return usersRepository.findByEmail(email);
+    }
+
+    public List<Products> getAllUsersProduct() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Users user = usersRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+        System.out.println("PRINT FAVORITE PRODUCT--------------------------------------------------------------------------------------------------------------------");
+//        System.out.println("FAVORITE PROD ------->    "+favoriteProductRepository.findAllByUsers_UserId(user.getUserId()));
+        System.out.println("END__PRINT FAVORITE PRODUCT--------------------------------------------------------------------------------------------------------------------");
+//        return favoriteProductRepository.findAllByUsers_UserId(user.getUserId());
+        List<Products> favorites = favoriteProductRepository.findAllByUsers_UserId(user.getUserId());
+//        List<Products> favoriteProducts = productsRepository.findAllById(favorites);
+
+        System.out.println(favorites);
+
+        return favorites;
+    }
+
+    public List<Integer> getAllFUsersProduct() {
+        // Текущий пользователя
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // Достаем пользователя из базы данных
+        Users user = usersRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+
+        // Если пользователь не авторизован, прерываемся
+        if (authentication.getName().equals("ROLE_ANONYMOUS")) {
+            return Collections.emptyList();
+        }
+
+        if (user.getRoleId().getUserTypeName().equals("Klient")) {
+            // Если это Клиент - обращаемся к репозиторию и возвращаем список ID его товаров
+            return favoriteProductRepository.getAllProductsFUdByUsers(user.getUserId());
+        }
+        // Во всех остальных случаях (если это не Клиент и т.д.) возвращаем пустой список
+        return Collections.emptyList();
     }
 }
