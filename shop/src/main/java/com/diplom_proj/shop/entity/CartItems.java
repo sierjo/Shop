@@ -3,7 +3,7 @@ package com.diplom_proj.shop.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "carts_item")
+@Table(name = "cart_items")
 public class CartsItem {
     @Id
     @Column(name = "id")
