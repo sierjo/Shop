@@ -50,6 +50,9 @@ public class WebSecurityConfig {
             // Only Klient can edit the products / add products to favorite Product page
             auth.requestMatchers("/products/favoriteProduct").hasAuthority("Klient");
 
+            // Only Klient add products to Cart
+            auth.requestMatchers("/strona/cart").hasAuthority("Klient");
+
             // Все остальные страницы будут требовать авторизации
             auth.anyRequest().authenticated();
         });

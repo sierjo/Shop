@@ -23,8 +23,8 @@ public class Products {
     @Column(nullable = true, length = 64)
     private String productPhoto;
 
-    @OneToMany(targetEntity = CartsItem.class, mappedBy = "product", cascade = CascadeType.ALL)
-    private List<CartsItem> cartsItems = new ArrayList<>();
+    @OneToMany(targetEntity = CartItems.class, mappedBy = "product", cascade = CascadeType.ALL)
+    private List<CartItems> cartItems = new ArrayList<>();
     @OneToMany(targetEntity = OrderItems.class, mappedBy = "products", cascade = CascadeType.ALL)
     private List<OrderItems> orderItems = new ArrayList<>();
     @OneToMany(targetEntity = FavoriteProducts.class, mappedBy = "products", cascade = CascadeType.ALL)
@@ -33,14 +33,14 @@ public class Products {
     public Products() {
     }
 
-    public Products(Integer productId, String productName, String productDescription, Integer productPrice, Integer productQuantity, String productPhoto, List<CartsItem> cartsItems, List<OrderItems> orderItems, List<FavoriteProducts> favoriteProducts) {
+    public Products(Integer productId, String productName, String productDescription, Integer productPrice, Integer productQuantity, String productPhoto, List<CartItems> cartItems, List<OrderItems> orderItems, List<FavoriteProducts> favoriteProducts) {
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
         this.productPrice = productPrice;
         this.productQuantity = productQuantity;
         this.productPhoto = productPhoto;
-        this.cartsItems = cartsItems;
+        this.cartItems = cartItems;
         this.orderItems = orderItems;
         this.favoriteProducts = favoriteProducts;
     }
@@ -89,16 +89,16 @@ public class Products {
         return productPhoto;
     }
 
-    public void setProductPhoto(String productsPhoto) {
-        this.productPhoto = productsPhoto;
+    public void setProductPhoto(String productPhoto) {
+        this.productPhoto = productPhoto;
     }
 
-    public List<CartsItem> getCartsItems() {
-        return cartsItems;
+    public List<CartItems> getCartItems() {
+        return cartItems;
     }
 
-    public void setCartsItems(List<CartsItem> cartsItems) {
-        this.cartsItems = cartsItems;
+    public void setCartItems(List<CartItems> cartItems) {
+        this.cartItems = cartItems;
     }
 
     public List<OrderItems> getOrderItems() {
@@ -126,9 +126,6 @@ public class Products {
                 ", productPrice=" + productPrice +
                 ", productQuantity=" + productQuantity +
                 ", productPhoto='" + productPhoto + '\'' +
-                ", cartsItems=" + cartsItems +
-                ", orderItems=" + orderItems +
-                ", favoriteProducts=" + favoriteProducts +
                 '}';
     }
 }

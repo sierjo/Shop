@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
 //         // })
 //         .catch(error => console.error('Ошибка:', error));
 // }
-function deleteProductCard(productId) {
+function deleteFavoriteProduct(productId) {
     // 1. (Опционально) Спрашиваем пользователя, точно ли он хочет удалить
     if (!confirm("Удалить этот товар?")) {
         return; // Если нажал "Отмена", прерываем функцию

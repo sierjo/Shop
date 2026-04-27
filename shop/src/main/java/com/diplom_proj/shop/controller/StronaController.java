@@ -1,12 +1,9 @@
 package com.diplom_proj.shop.controller;
 
 import com.diplom_proj.shop.dto.UsersDTO;
-import com.diplom_proj.shop.entity.FavoriteProducts;
 import com.diplom_proj.shop.entity.Products;
 import com.diplom_proj.shop.repository.ProductsRepository;
-import com.diplom_proj.shop.services.FavoriteProductsServices;
-import com.diplom_proj.shop.services.ProductsService;
-import com.diplom_proj.shop.services.UsersService;
+import com.diplom_proj.shop.services.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,12 +21,16 @@ public class StronaController {
 
     private final ProductsService productsService;
     private final UsersService usersService;
+    private final CartItemsServices cartItemsServices;
+    private final CartServices cartServices;
     private final ProductsRepository productsRepository;
     private final FavoriteProductsServices favoriteProductsServices;
 
-    public StronaController(ProductsService productsService, UsersService usersService, ProductsRepository productsRepository, FavoriteProductsServices favoriteProductsServices) {
+    public StronaController(ProductsService productsService, UsersService usersService, CartItemsServices cartItemsServices, CartServices cartServices, ProductsRepository productsRepository, FavoriteProductsServices favoriteProductsServices) {
         this.productsService = productsService;
         this.usersService = usersService;
+        this.cartItemsServices = cartItemsServices;
+        this.cartServices = cartServices;
         this.productsRepository = productsRepository;
         this.favoriteProductsServices = favoriteProductsServices;
     }
@@ -42,7 +43,7 @@ public class StronaController {
         // Put this list to model by name "products"
         model.addAttribute("currentUser", user);
         model.addAttribute("products", allProducts);
-        model.addAttribute("favoriteProduct", new FavoriteProducts());
+//        model.addAttribute("favoriteProduct", new FavoriteProducts());
         return "strona";
     }
 
@@ -70,6 +71,7 @@ public class StronaController {
         // Ошибка если нет товара
         return ResponseEntity.badRequest().build();
     }
+
     @PostMapping("/strona/favoriteProduct")
     @ResponseBody
     public ResponseEntity<?> favoriteProduct(@RequestParam Integer productId) {
@@ -85,8 +87,8 @@ public class StronaController {
             if (isAdded) {
                 return ResponseEntity.ok().build(); // 200 OK
             } else {
-                boolean deleteProductFromFavorite =favoriteProductsServices.deleteFavoriteUserProduct(productId);
-                if (deleteProductFromFavorite){
+                boolean deleteProductFromFavorite = favoriteProductsServices.deleteFavoriteUserProduct(productId);
+                if (deleteProductFromFavorite) {
                     return ResponseEntity.status(HttpStatus.CONFLICT).build();
                 }
                 // 409 Conflict (Этот товар уже был добавлен в избранное)
@@ -96,6 +98,50 @@ public class StronaController {
         // 400 Bad Request (Товара с таким ID не существует)
         return ResponseEntity.badRequest().build();
     }
+
+    @PostMapping("/strona/userCart/existAllCartItems")
+    @ResponseBody
+    public ResponseEntity<List<Integer>> ProductExistInCart() {
+
+        List<Integer> addedProductsInUserCart = cartItemsServices.getAllUsersProductIdInCart();
+
+        if (addedProductsInUserCart.isEmpty()) {
+
+            // 409 Conflict (Этот товар уже был добавлен в избранное)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        } else {
+            return ResponseEntity.ok(addedProductsInUserCart); // 200 OK
+        }
+//        // 400 Bad Request (Товара с таким ID не существует)
+//        return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/strona/addToCartItem")
+    @ResponseBody
+    public ResponseEntity<?> ProductToCart(@RequestParam Integer productId) {
+
+        boolean cartCreate = cartServices.createCart();
+        boolean cartItemExist = cartItemsServices.existProductInCartItem(productId);
+        if (cartItemExist) {
+            cartItemsServices.deleteProductFromCartItem(productId);
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            // 409 Conflict (Этот товар уже был добавлен в избранное)
+        } else {
+            boolean isAdded = false;
+            if (cartCreate) {
+                isAdded = cartItemsServices.addToCartItem(productId);
+            }
+
+            if (isAdded) {
+                return ResponseEntity.ok().build(); // 200 OK
+            }
+        }
+
+        // 400 Bad Request (Товара с таким ID не существует)
+        return ResponseEntity.badRequest().build();
+    }
+
 
     @PostMapping("/products/favoriteProduct/exist")
     @ResponseBody

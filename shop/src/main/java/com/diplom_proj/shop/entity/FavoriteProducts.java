@@ -53,8 +53,8 @@ public class FavoriteProducts {
     public String toString() {
         return "FavoriteProducts{" +
                 "favoriteProductsId=" + favoriteProductsId +
-                ", products=" + products +
-                ", users=" + users +
+                ", productId=" + (products != null ? products.getProductId() : "null") +
+                ", userId=" + (users != null ? users.getUserId() : "null") +
                 '}';
     }
 }

@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "cart_items")
-public class CartsItem {
+public class CartItems {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cartsItmId;
+    private Integer cartItemId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id", nullable = false)
     private Carts carts;
@@ -17,24 +17,24 @@ public class CartsItem {
     private Products product;
 
     @Column(name = "quantity")
-    private Integer priceInCart;
+    private Integer priceInCartItem;
 
-    public CartsItem() {
+    public CartItems() {
     }
 
-    public CartsItem(Integer cartsItmId, Carts carts, Products product, Integer priceInCart) {
-        this.cartsItmId = cartsItmId;
+    public CartItems(Integer cartItemId, Carts carts, Products product, Integer priceInCartItem) {
+        this.cartItemId = cartItemId;
         this.carts = carts;
         this.product = product;
-        this.priceInCart = priceInCart;
+        this.priceInCartItem = priceInCartItem;
     }
 
-    public Integer getCartsItmId() {
-        return cartsItmId;
+    public Integer getCartItemId() {
+        return cartItemId;
     }
 
-    public void setCartsItmId(Integer cartsItmId) {
-        this.cartsItmId = cartsItmId;
+    public void setCartItemId(Integer cartItemId) {
+        this.cartItemId = cartItemId;
     }
 
     public Carts getCarts() {
@@ -53,21 +53,21 @@ public class CartsItem {
         this.product = product;
     }
 
-    public Integer getPriceInCart() {
-        return priceInCart;
+    public Integer getPriceInCartItem() {
+        return priceInCartItem;
     }
 
-    public void setPriceInCart(Integer priceInCart) {
-        this.priceInCart = priceInCart;
+    public void setPriceInCartItem(Integer priceInCartItem) {
+        this.priceInCartItem = priceInCartItem;
     }
 
     @Override
     public String toString() {
         return "CartsItem{" +
-                "cartsItmId=" + cartsItmId +
-                ", carts=" + carts +
-                ", product=" + product +
-                ", priceInCart=" + priceInCart +
+                "cartItemId=" + cartItemId +
+                ", carts=" + (carts != null ? carts.getCartsId() : "null")+
+                ", productId=" + (product != null ? product.getProductId() : "null") +
+                ", priceInCart=" + priceInCartItem +
                 '}';
     }
 }
