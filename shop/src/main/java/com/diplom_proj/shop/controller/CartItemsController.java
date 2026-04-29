@@ -1,5 +1,6 @@
 package com.diplom_proj.shop.controller;
 
+import com.diplom_proj.shop.dto.ProductDTO;
 import com.diplom_proj.shop.dto.UsersDTO;
 import com.diplom_proj.shop.entity.Products;
 import com.diplom_proj.shop.services.*;
@@ -31,9 +32,13 @@ public class CartItemsController {
     @GetMapping("/strona/cart")
     public String product_in_cart(Model model) {
         List<Products> cartItemProduct = cartItemsServices.getAllUsersProductInCart();
+        ProductDTO totalPrice = cartItemsServices.dtoProdPrice();
+
         UsersDTO user = usersService.dtouser();
         model.addAttribute("currentUser", user);
         model.addAttribute("cartItemProduct", cartItemProduct);
+        model.addAttribute("totalPrice", totalPrice.getSumAllProductPrice());
+
         return "cartItemProduct";
     }
 

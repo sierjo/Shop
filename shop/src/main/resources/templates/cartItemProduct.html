@@ -133,6 +133,12 @@
                 </article>
             </div>
         </section>
+        <section>
+            <div class="cart-summary-footer" style="text-align: right; margin-top: 20px;">
+                <h3>Итого к оплате: <span id="total-price" th:text="${totalPrice} + ' PLN'"></span>
+                    <a href="/order/checkout" class="btn btn-primary">Оформить заказ</a></h3>
+            </div>
+        </section>
     </main>
 </div>
 <!--<script th:src="@{/js/favoriteprod.js}"></script>-->

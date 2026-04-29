@@ -22,4 +22,7 @@ public interface CartItemsRepository extends JpaRepository<CartItems, Integer> {
 
     @Query("SELECT c.product FROM CartItems c WHERE c.carts.cartsId = :cart_id")
     List<Products> getAllProductsInCartByCartId(@Param("cart_id") Integer carts);
+
+    @Query("SELECT COALESCE(SUM(c.product.productPrice), 0) FROM CartItems c WHERE c.carts.cartsId = :cart_id")
+    Integer getSumOfPricesByCartId(@Param("cart_id") Integer cartId);
 }

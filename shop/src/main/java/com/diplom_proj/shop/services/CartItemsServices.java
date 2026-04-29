@@ -1,5 +1,7 @@
 package com.diplom_proj.shop.services;
 
+import com.diplom_proj.shop.dto.ProductDTO;
+import com.diplom_proj.shop.dto.UsersDTO;
 import com.diplom_proj.shop.entity.CartItems;
 import com.diplom_proj.shop.entity.Products;
 import com.diplom_proj.shop.entity.Users;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CartItemsServices {
@@ -111,5 +114,17 @@ public class CartItemsServices {
 
     public boolean TestOnEmptyProducts() {
         return !cartItemsRepository.findAll().isEmpty();
+    }
+
+    public ProductDTO dtoProdPrice() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // Достаем пользователя из базы данных
+        Users user = usersRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+        ProductDTO productDTO = new ProductDTO();
+
+        productDTO.setSumAllProductPrice(cartItemsRepository.getSumOfPricesByCartId(cartRepository.findCartsByUser_UserId(user.getUserId()).getCartsId()));
+        System.out.println(productDTO);
+        return productDTO;
     }
 }
