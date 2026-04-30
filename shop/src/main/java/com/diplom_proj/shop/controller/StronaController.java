@@ -50,24 +50,12 @@ public class StronaController {
     @PostMapping("/products/update-product")
     @ResponseBody // аннотация не подгружает страницу html, а просто передаёт параметры в файл js
     public ResponseEntity<?> updateProductParameters(@RequestParam Integer id, @RequestParam String description, @RequestParam String name, @RequestParam Integer price) {
+        boolean updated = productsService.updateProduct(id, name, description, price);
 
-        // Находим товар в базе
-        Optional<Products> updateProduct = productsRepository.findById(id);
-
-        if (updateProduct.isPresent()) {
-            Products product = updateProduct.get();
-
-            // Меняем описание
-            product.setProductName(name);
-            product.setProductDescription(description);
-            product.setProductPrice(price);
-            // Сохраняем обратно в базу
-            productsRepository.save(product);
-
+        if (updated) {
             // Ответ дя JS (HTTP 200 OK)
             return ResponseEntity.ok().build();
         }
-
         // Ошибка если нет товара
         return ResponseEntity.badRequest().build();
     }
