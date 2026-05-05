@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Оформление заказа</title>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/MakingOrderCSS.css}"/>
+</head>
+<body>
+
+
+<main class="checkout-container">
+    <div class="checkout-content">
+        <!-- Форма -->
+        <section class="checkout-form-section">
+            <h2>Odbiorca przesyłki</h2>
+            <div class="form-intro">
+                <p>Wprowadź swoje dane!</p>
+            </div>
+
+            <form action="/order/submit" method="post" class="address-form">
+                <div class="form-group">
+                    <input type="text" id="firstName" name="firstName" placeholder="imię *" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="lastName" name="lastName" placeholder="nazwisko *" required>
+                </div>
+
+<!--                <div class="form-group">-->
+<!--                    <input type="text" id="company" name="company" placeholder="firma">-->
+<!--                </div>-->
+
+                <div class="form-row phone-row">
+                    <div class="form-group select-group">
+                        <label for="phoneCode" class="floating-label">kierunkowy numer</label>
+                        <select id="phoneCode" name="phoneCode">
+                            <option value="+48" selected>PL (+48)</option>
+                            <option value="+1">US/CA (+1)</option>
+                            <option value="+44">UK (+44)</option>
+                            <option value="+49">DE (+49)</option>
+                            <option value="+33">FR (+33)</option>
+                            <option value="+34">ES (+34)</option>
+                            <option value="+39">IT (+39)</option>
+                            <option value="+7">RU/KZ (+7)</option>
+                            <option value="+86">CN (+86)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="nr komórkowy *" required>
+                    </div>
+                </div>
+
+                <div class="form-group select-group country-group">
+                    <label for="country" class="floating-label">kraj *</label>
+                    <select id="country" name="country">
+                        <option value="PL" selected>Poland</option>
+                        <option value="US">United States</option>
+                        <option value="CA">Canada</option>
+                        <option value="GB">United Kingdom</option>
+                        <option value="DE">Germany</option>
+                        <option value="FR">France</option>
+                        <option value="ES">Spain</option>
+                        <option value="IT">Italy</option>
+                        <option value="RU">Russia</option>
+                        <option value="KZ">Kazakhstan</option>
+                        <option value="CN">China</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="street" name="street" placeholder="ulica *" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="buildingNo" name="buildingNo" placeholder="nr budynku *" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="aptNo" name="aptNo" placeholder="nr mieszkania">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="zipCode" name="zipCode" placeholder="kod pocztowy *" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="city" name="city" placeholder="miejscowość *" required>
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    <p><strong>Twój domyślny adres</strong></p>
+                    <button type="submit" class="btn-submit">ZAPISZ I KONTYNUUJ</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Итоги -->
+        <aside class="checkout-sidebar">
+            <div class="summary-box">
+                <h3>Podsumowanie</h3>
+                <div class="summary-details">
+                    <div class="summary-row">
+                        <span>Wartość produktów</span>
+                        <!-- Значение totalPrice передается из контроллера -->
+                        <span th:text="${totalPrice} + ' PLN'">0.00 PLN</span>
+                    </div>
+                </div>
+                <div class="summary-total">
+                    <span>Razem</span>
+                    <span class="total-price" th:text="${totalPrice} + ' PLN'"></span>
+                </div>
+            </div>
+        </aside>
+    </div>
+</main>
+
+</body>
+</html>
