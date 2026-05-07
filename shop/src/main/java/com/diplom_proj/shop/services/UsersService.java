@@ -59,6 +59,13 @@ public class UsersService {
         }
         return usersDTO;
     }
+    public Users getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Распаковка Optional через orElseThrow
+        return getUserByEmail(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("Пользователь не авторизован или не найден."));
+    }
 
     public boolean addToFavorite(int productId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

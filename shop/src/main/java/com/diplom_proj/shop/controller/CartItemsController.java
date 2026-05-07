@@ -42,18 +42,6 @@ public class CartItemsController {
         return "cartItemProduct";
     }
 
-    @GetMapping("/create/order")
-    public String makingTheOrder(Model model) {
-
-        // Получение итоговой суммы (как дял product_in_cart)
-        ProductDTO totalPrice = cartItemsServices.dtoProdPrice();
-
-        // Передаем сумму в шаблон
-        model.addAttribute("totalPrice", totalPrice.getSumAllProductPrice());
-
-        return "makingOrder";
-    }
-
     @PostMapping("/cartProduct/delete") // Сделали URL более чистым
     @ResponseBody
     public ResponseEntity<?> deleteCartProduct(@RequestParam Integer productId) {

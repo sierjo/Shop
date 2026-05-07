@@ -14,7 +14,7 @@ public class Address {
     private Integer adressId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private Users users;
+    private Users user;
 
     @Column(name = "first_name")
     private String name;
@@ -22,6 +22,8 @@ public class Address {
     private String surname;
     @Column(name = "City")
     private String cityAddress;
+    @Column(name = "Country")
+    private String countryAddress;
     @Column(name = "Street")
     private String streetAddress;
     @Column(name = "House_number")
@@ -36,11 +38,12 @@ public class Address {
     public Address() {
     }
 
-    public Address(Users users, String name, String surname, String cityAddress, String streetAddress, String houseNumberAddress, String apartmentNumberAddress, String code, List<Orders> orders) {
-        this.users = users;
+    public Address(Users user, String name, String surname, String cityAddress, String countryAddress, String streetAddress, String houseNumberAddress, String apartmentNumberAddress, String code, List<Orders> orders) {
+        this.user = user;
         this.name = name;
         this.surname = surname;
         this.cityAddress = cityAddress;
+        this.countryAddress = countryAddress;
         this.streetAddress = streetAddress;
         this.houseNumberAddress = houseNumberAddress;
         this.apartmentNumberAddress = apartmentNumberAddress;
@@ -56,12 +59,12 @@ public class Address {
         this.adressId = adressId;
     }
 
-    public Users getUsers() {
-        return users;
+    public Users getUser() {
+        return user;
     }
 
-    public void setUsers(Users users) {
-        this.users = users;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     public String getName() {
@@ -86,6 +89,14 @@ public class Address {
 
     public void setCityAddress(String cityAddress) {
         this.cityAddress = cityAddress;
+    }
+
+    public String getCountryAddress() {
+        return countryAddress;
+    }
+
+    public void setCountryAddress(String countryAddress) {
+        this.countryAddress = countryAddress;
     }
 
     public String getStreetAddress() {
@@ -132,10 +143,11 @@ public class Address {
     public String toString() {
         return "Address{" +
                 "adressId=" + adressId +
-                ", users=" + users +
+                ", user=" + user +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", cityAddress='" + cityAddress + '\'' +
+                ", countryAddress='" + countryAddress + '\'' +
                 ", streetAddress='" + streetAddress + '\'' +
                 ", houseNumberAddress='" + houseNumberAddress + '\'' +
                 ", apartmentNumberAddress='" + apartmentNumberAddress + '\'' +

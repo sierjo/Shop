@@ -31,7 +31,7 @@ public class Users {
     @JoinColumn(name = "role_id", referencedColumnName = "user_type_id")
     private Roles roleId;
 
-    @OneToMany(targetEntity = Address.class, mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = Address.class, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses = new ArrayList<>();
     @OneToMany(targetEntity = Orders.class, mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Orders> orders = new ArrayList<>();
