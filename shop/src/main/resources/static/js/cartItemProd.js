@@ -28,3 +28,48 @@ function deleteCartProduct(productId) {
         });
 }
 
+function updateQuantity(productId, quantity, productPrice) {
+    let newQuantity = Number(quantity);
+    // let newQuantity = quantity;
+
+    console.log(typeof newQuantity)
+
+    // Проверка на 0 и отрицательное количество
+    if (isNaN(newQuantity) || newQuantity === 0) {
+        newQuantity = 1;
+    } else if (newQuantity < 0) {
+        newQuantity = Math.abs(newQuantity);
+    }
+
+    // Отправка даннх на сервер для сохранения в БД
+    let formData = new URLSearchParams();
+    formData.append('itemId', productId);
+    formData.append('quantity', newQuantity);
+    fetch('/cart/update', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData
+    })
+        .then(response => {
+            if (!response.ok) {
+                alert('Ошибка при сохранении количества в корзине!');
+                throw new Error('запрещённое число');
+            }
+            return response.text(); // Читаем новую сумму от Java-контроллера!
+        })
+        .then(newTotalSum => {
+            // Обновление итоговой суммы
+            let grandTotalElement = document.getElementById('total-price');
+            let fixedQuantity = document.getElementById('quantity_input' + productId);
+            if (grandTotalElement) {
+                grandTotalElement.innerText = newTotalSum + ' PLN';
+            }
+            if (fixedQuantity) {
+                fixedQuantity.value = newQuantity;
+            }
+        })
+        .catch(error => console.error('Ошибка:', error));
+}
+

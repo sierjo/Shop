@@ -57,29 +57,38 @@
     </header>
     <main class="content">
 
-        <section th:each="product : ${cartItemProduct}" class="products-catalog">
+        <section th:each="productIncart : ${cartItemProduct}" class="products-catalog">
 
             <div class="products-grid" sec:authorize="hasAnyAuthority('Klient')">
-                <article class="product-card" th:id="'product-card-' + ${product.productId}">
-                    <img th:if="${product.productPhoto != null}"
-                         th:src="@{'/photos/products/' + ${product.productId} + '/' + ${product.productPhoto}}"
+                <article class="product-card" th:id="'product-card-' + ${productIncart.productId}">
+                    <img th:if="${productIncart.productPhoto != null}"
+                         th:src="@{'/photos/products/' + ${productIncart.getProductId()} + '/' + ${productIncart.productPhoto}}"
                          alt="Product Image"
                          class="productCartImg"/>
 
-                    <img th:unless="${product.productPhoto != null}"
+                    <img th:unless="${productIncart.productPhoto != null}"
                          th:src="@{/images/no-image.png}"
                          alt="No Image"
                          class="ImgError"/>
 
-                    <h3 th:text="${product.productName}">Название товара</h3>
-                    <p th:text="${product.productDescription}">Описание</p>
-                    <h4 class="productPrice" th:text="${product.productPrice} + ' PLN'">Цена</h4>
+                    <h3 th:text="${productIncart.productName}">Название товара</h3>
+                    <p th:text="${productIncart.productDescription}">Описание</p>
+                    <h4 class="productPrice" th:text="${productIncart.productPrice} + ' PLN'">Цена</h4>
+
+<!--                            th:class="'quantity_input' + ${productIncart.productId} + '"-->
+                    <input
+                            type="number"
+                            th:value="${productIncart.quantityProduct}"
+                            min="1"
+                            th:id="'quantity_input' + ${productIncart.productId}"
+                            style="width: 80px;"
+                            th:onblur="'updateQuantity(' + ${productIncart.productId} + ', this.value, ' + ${productIncart.productPrice} + ')'"/>
 
                     <div class="add-to-cart" sec:authorize="hasAnyAuthority('Klient')">
                         <a href="javascript:void(0);" class="icons"
-                           th:onclick="'deleteCartProduct(' + ${product.productId} + ')'">
+                           th:onclick="'deleteCartProduct(' + ${productIncart.productId} + ')'">
 
-                            <svg th:id="'cart-added'+ ${product.productId}" xmlns="http://www.w3.org/2000/svg"
+                            <svg th:id="'cart-added'+ ${productIncart.productId}" xmlns="http://www.w3.org/2000/svg"
                                  width="17" height="12"
                                  viewBox="0 0 26.00 25.00"
                                  data-guides="{&quot;vertical&quot;:[],&quot;horizontal&quot;:[]}">

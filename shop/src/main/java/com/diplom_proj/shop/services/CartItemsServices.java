@@ -1,7 +1,6 @@
 package com.diplom_proj.shop.services;
 
 import com.diplom_proj.shop.dto.ProductDTO;
-import com.diplom_proj.shop.dto.UsersDTO;
 import com.diplom_proj.shop.entity.CartItems;
 import com.diplom_proj.shop.entity.Products;
 import com.diplom_proj.shop.entity.Users;
@@ -14,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -48,8 +48,7 @@ public class CartItemsServices {
         CartItems item = new CartItems();
         item.setCarts(cartRepository.getCartsByUser_UserId(user.getUserId()));
         item.setProduct(product);
-        item.setPriceInCartItem(product.getProductPrice());
-        item.setPriceInCartItem(1);
+        item.setQuantityProductInCartItem(1);
         cartItemsRepository.save(item);
 
         return true; // If it doesn't find a duplicate, favoriteProductRepository return false it will return true
@@ -78,13 +77,34 @@ public class CartItemsServices {
         return Collections.emptyList();
     }
 
-    public List<Products> getAllUsersProductInCart() {
+    public List<ProductDTO> getAllUsersProductInCart() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Users user = usersRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
 
         if (cartRepository.existsCartsByUser_UserId(user.getUserId())) {
-            return cartItemsRepository.getAllProductsInCartByCartId(cartRepository.getCartsByUser_UserId(user.getUserId()).getCartsId());
+            System.out.println(cartItemsRepository.getAllProductsInCartByCartId(cartRepository.getCartsByUser_UserId(user.getUserId()).getCartsId()));
+            // ID корзины
+            Integer cartId = cartRepository.getCartsByUser_UserId(user.getUserId()).getCartsId();
+
+            // Получение списка элементов в корзине CartItems
+            List<Products> itemsInCart = cartItemsRepository.getAllProductsInCartByCartId(cartId);
+
+            // Создание списока DTO
+            List<ProductDTO> productDTOS = new ArrayList<>();
+
+            // Проход циклом по каждому элементу корзины и заполнене DTO
+            for (Products item : itemsInCart) {
+                ProductDTO dto = new ProductDTO();
+                dto.setProductId(item.getProductId());
+                dto.setProductName(item.getProductName());
+                dto.setProductPhoto(item.getProductPhoto());
+                dto.setProductPrice(item.getProductPrice());
+                dto.setProductDescription(item.getProductDescription());
+                dto.setQuantityProduct(cartItemsRepository.findQuantityByCartAndProduct(cartId, item.getProductId()));
+                productDTOS.add(dto);
+            }
+            return productDTOS;
         } else {
             return Collections.emptyList();
         }
@@ -126,5 +146,17 @@ public class CartItemsServices {
         productDTO.setSumAllProductPrice(cartItemsRepository.getSumOfPricesByCartId(cartRepository.findCartsByUser_UserId(user.getUserId()).getCartsId()));
         System.out.println(productDTO);
         return productDTO;
+    }
+
+    public boolean updateProductQuantity(int productId, int quantity) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // Достаем пользователя из базы данных
+        Users user = usersRepository.findByEmail(authentication.getName())
+                .orElseThrow
+                        (() -> new UsernameNotFoundException("Пользователь не найден"));
+        CartItems updatedCartItems = cartItemsRepository.findCartItemsByCarts_CartsIdAndProduct_ProductId(cartRepository.findCartsByUser_UserId(user.getUserId()).getCartsId(), productId);
+        updatedCartItems.setQuantityProductInCartItem(quantity);
+        cartItemsRepository.save(updatedCartItems);
+        return true;
     }
 }

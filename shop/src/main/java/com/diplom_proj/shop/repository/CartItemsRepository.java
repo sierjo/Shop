@@ -23,6 +23,9 @@ public interface CartItemsRepository extends JpaRepository<CartItems, Integer> {
     @Query("SELECT c.product FROM CartItems c WHERE c.carts.cartsId = :cart_id")
     List<Products> getAllProductsInCartByCartId(@Param("cart_id") Integer carts);
 
-    @Query("SELECT COALESCE(SUM(c.product.productPrice), 0) FROM CartItems c WHERE c.carts.cartsId = :cart_id")
+    @Query("SELECT COALESCE(SUM(c.product.productPrice * c.quantityProductInCartItem), 0) FROM CartItems c WHERE c.carts.cartsId = :cart_id")
     Integer getSumOfPricesByCartId(@Param("cart_id") Integer cartId);
+    @Query("SELECT c.quantityProductInCartItem FROM CartItems c WHERE c.carts.cartsId = :cartId AND c.product.productId = :productId")
+    Integer findQuantityByCartAndProduct(@Param("cartId") Integer cartId, @Param("productId") Integer productId);
+    CartItems findCartItemsByCarts_CartsIdAndProduct_ProductId(Integer cartsId, Integer productId);
 }

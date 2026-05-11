@@ -19,11 +19,13 @@ import java.util.Optional;
 @Controller
 public class CartItemsController {
     private final UsersService usersService;
+    private final OrderServices orderServices;
     private final CartItemsServices cartItemsServices;
     private final ProductsService productsService;
 
-    public CartItemsController(UsersService usersService, CartItemsServices cartItemsServices, ProductsService productsService) {
+    public CartItemsController(UsersService usersService, OrderServices orderServices, CartItemsServices cartItemsServices, ProductsService productsService) {
         this.usersService = usersService;
+        this.orderServices = orderServices;
         this.cartItemsServices = cartItemsServices;
         this.productsService = productsService;
     }
@@ -31,7 +33,7 @@ public class CartItemsController {
 
     @GetMapping("/strona/cart")
     public String product_in_cart(Model model) {
-        List<Products> cartItemProduct = cartItemsServices.getAllUsersProductInCart();
+        List<ProductDTO> cartItemProduct = cartItemsServices.getAllUsersProductInCart();
         ProductDTO totalPrice = cartItemsServices.dtoProdPrice();
 
         UsersDTO user = usersService.dtouser();
@@ -66,4 +68,22 @@ public class CartItemsController {
         // 400 Bad Request (Товара с таким ID вообще не существует в природе)
         return ResponseEntity.badRequest().build();
     }
+
+    @PostMapping("/cart/update")
+    @ResponseBody
+    public ResponseEntity<?> updateQuantityProduct(@RequestParam Integer itemId, @RequestParam Integer quantity) {
+
+        // Защита отрицательного числа
+        if (quantity <= 0) {
+            return ResponseEntity.badRequest().body("Недопустимое количество"); // 400
+
+        } else if (cartItemsServices.updateProductQuantity(itemId, quantity)) {
+            ProductDTO newTotalDto = orderServices.dtoProdPrice();
+            Integer newTotalSum = newTotalDto.getSumAllProductPrice();
+            return ResponseEntity.ok(newTotalSum);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found
+    }
 }
+

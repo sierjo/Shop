@@ -17,16 +17,16 @@ public class CartItems {
     private Products product;
 
     @Column(name = "quantity")
-    private Integer priceInCartItem;
+    private Integer quantityProductInCartItem;
 
     public CartItems() {
     }
 
-    public CartItems(Integer cartItemId, Carts carts, Products product, Integer priceInCartItem) {
+    public CartItems(Integer cartItemId, Carts carts, Products product, Integer quantityProductInCartItem) {
         this.cartItemId = cartItemId;
         this.carts = carts;
         this.product = product;
-        this.priceInCartItem = priceInCartItem;
+        this.quantityProductInCartItem = quantityProductInCartItem;
     }
 
     public Integer getCartItemId() {
@@ -53,12 +53,12 @@ public class CartItems {
         this.product = product;
     }
 
-    public Integer getPriceInCartItem() {
-        return priceInCartItem;
+    public Integer getQuantityProductInCartItem() {
+        return quantityProductInCartItem;
     }
 
-    public void setPriceInCartItem(Integer priceInCartItem) {
-        this.priceInCartItem = priceInCartItem;
+    public void setQuantityProductInCartItem(Integer priceInCartItem) {
+        this.quantityProductInCartItem = priceInCartItem;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class CartItems {
                 "cartItemId=" + cartItemId +
                 ", carts=" + (carts != null ? carts.getCartsId() : "null")+
                 ", productId=" + (product != null ? product.getProductId() : "null") +
-                ", priceInCart=" + priceInCartItem +
+                ", quantityProductInCartItem=" + quantityProductInCartItem +
                 '}';
     }
 }
