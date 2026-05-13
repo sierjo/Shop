@@ -17,22 +17,23 @@ import java.util.List;
 public class OrderServices {
     private final UsersRepository usersRepository;
     private final UsersService usersService;
+    private final AddressServices addressServices;
     private final CartRepository cartRepository;
     private final CartItemsRepository cartItemsRepository;
     private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
-    private final AddressRepository addressRepository;
+    private final OrderItemService orderItemService;
 
     public OrderServices(UsersRepository usersRepository, CartRepository cartRepository,
                          CartItemsRepository cartItemsRepository, UsersService usersService,
-                         AddressRepository addressRepository, OrderItemRepository orderItemRepository, OrderRepository orderRepository) {
+                         AddressServices addressServices,
+                         OrderRepository orderRepository, OrderItemService orderItemService) {
         this.usersRepository = usersRepository;
         this.cartRepository = cartRepository;
         this.cartItemsRepository = cartItemsRepository;
         this.usersService = usersService;
-        this.addressRepository = addressRepository;
-        this.orderItemRepository = orderItemRepository;
+        this.addressServices = addressServices;
         this.orderRepository = orderRepository;
+        this.orderItemService = orderItemService;
     }
 
     public ProductDTO dtoProdPrice() {
@@ -50,37 +51,20 @@ public class OrderServices {
     @Transactional
     public void createOrder(OrderRequestDTO request) {
         Users user = usersService.getCurrentUser();
-        // Создание сущности Address
-        Address newAddress = new Address();
-
-        newAddress.setUser(user);
-        newAddress.setName(request.getFirstName());
-        newAddress.setSurname(request.getLastName());
-        newAddress.setCountryAddress(request.getCountry());
-        newAddress.setCityAddress(request.getCity());
-        newAddress.setStreetAddress(request.getStreet());
-        newAddress.setHouseNumberAddress(request.getBuildingNo());
-        newAddress.setApartmentNumberAddress(request.getAptNo());
-        newAddress.setCode(request.getZipCode());
-
-        // Сохранение в базу
-        addressRepository.save(newAddress);
-
-
         Carts cart = cartRepository.getCartsByUser_UserId(user.getUserId());
 
         // Получение товаров из корзины пользователя
-        List<CartItems> cartItems = cartItemsRepository.findAllByCarts_CartsId(cart.getCartsId());
-        System.out.println("ORDERS");
-        System.out.println(cartItems);
-        if (cartItems.isEmpty()) {
+        List<CartItems> userCartItems = cartItemsRepository.findAllByCarts_CartsId(cart.getCartsId());
+
+        if (userCartItems.isEmpty()) {
             throw new RuntimeException("Невозможно оформить заказ: корзина пуста.");
         }
+        Address address = addressServices.saveAddress(request);
 
         // Сохранение заказа
         Orders order = new Orders();
         // Подсчёт общей суммы заказа
-        int totalAmount = cartItems.stream()
+        int totalAmount = userCartItems.stream()
                 .mapToInt(item -> item.getProduct().getProductPrice() * item.getQuantityProductInCartItem())
                 .sum();
 
@@ -88,7 +72,7 @@ public class OrderServices {
         order.setOrderDate(String.valueOf(LocalDateTime.now()));
         order.setOrderStatus("CREATED");
         order.setTotalAmount(totalAmount);
-        order.setAddress(newAddress); // Привязка сохранённого адреса
+        order.setAddress(address); // Привязка сохранённого адреса
         order.setCity(request.getCity());
 
         String fullStreet = request.getStreet() + " " + request.getBuildingNo() + //Street + BuildingNumber(BuildingNo) + Apartment numbe(AptNo)
@@ -96,21 +80,10 @@ public class OrderServices {
         order.setStreet(fullStreet);
         order.setIndex(request.getZipCode());
 
-        order = orderRepository.save(order);
+        // Сохранение заказа и получение для id ордера для orderItem
+        Orders savedOrder = orderRepository.save(order);
 
-        // Перенос всех товароы с их колличеством в  OrderItems
-        OrderItems orderItem = new OrderItems();
-
-        for (CartItems item : cartItems) {
-            orderItem.setOrders(order);
-            orderItem.setProducts(item.getProduct());
-            orderItem.setQuantityInOrder(item.getQuantityProductInCartItem());
-            orderItem.setPurchasePrice(item.getProduct().getProductPrice()); // Фиксацыя цены покупки
-
-            orderItemRepository.save(orderItem);
-        }
-
-        // очистка карзины после заказа
-        cartItemsRepository.deleteAll(cartItems);
+        // ПЕРЕДАЧА ЗАКАЗОВ
+        orderItemService.createOrderItem(savedOrder, userCartItems);
     }
 }
