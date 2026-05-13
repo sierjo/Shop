@@ -11,7 +11,7 @@ public class Address {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer adressId;
+    private Integer addressId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
@@ -38,7 +38,9 @@ public class Address {
     public Address() {
     }
 
-    public Address(Users user, String name, String surname, String cityAddress, String countryAddress, String streetAddress, String houseNumberAddress, String apartmentNumberAddress, String code, List<Orders> orders) {
+    public Address(Users user, String name, String surname, String cityAddress,
+                   String countryAddress, String streetAddress, String houseNumberAddress,
+                   String apartmentNumberAddress, String code, List<Orders> orders) {
         this.user = user;
         this.name = name;
         this.surname = surname;
@@ -51,12 +53,12 @@ public class Address {
         this.orders = orders;
     }
 
-    public Integer getAdressId() {
-        return adressId;
+    public Integer getAddressId() {
+        return addressId;
     }
 
-    public void setAdressId(Integer adressId) {
-        this.adressId = adressId;
+    public void setAddressId(Integer adressId) {
+        this.addressId = adressId;
     }
 
     public Users getUser() {
@@ -142,8 +144,8 @@ public class Address {
     @Override
     public String toString() {
         return "Address{" +
-                "adressId=" + adressId +
-                ", user=" + user +
+                "addressId=" + addressId +
+                ", userId=" + (user != null ? user.getUserId() : "null") + // Вывод только ID пользователя
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", cityAddress='" + cityAddress + '\'' +
@@ -152,7 +154,6 @@ public class Address {
                 ", houseNumberAddress='" + houseNumberAddress + '\'' +
                 ", apartmentNumberAddress='" + apartmentNumberAddress + '\'' +
                 ", code='" + code + '\'' +
-                ", orders=" + orders +
                 '}';
     }
 }
