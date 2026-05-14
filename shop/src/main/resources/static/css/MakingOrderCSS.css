@@ -33,6 +33,56 @@ body {
     font-weight: normal;
 }
 
+.checkout-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.saved-address-wrapper {
+    min-width: 280px;
+}
+
+.saved-address-wrapper label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.saved-address-wrapper select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#saveAddressCheckboxWrapper {
+    margin-bottom: 10px;
+}
+
+#saveNewAddress {
+    cursor: pointer;
+}
+
+label[for="saveNewAddress"] {
+    color: #b78a76;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+
+/* Кнопка сохранения */
+.form-footer {
+    margin-top: 20px;
+}
+
+.form-footer p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
 .form-intro {
     font-size: 13px;
     color: #555;
@@ -89,16 +139,6 @@ body {
 
 .country-group {
     margin-bottom: 20px;
-}
-
-/* Кнопка сохранения */
-.form-footer {
-    margin-top: 30px;
-}
-
-.form-footer p {
-    margin: 5px 0;
-    font-size: 14px;
 }
 
 .btn-submit {

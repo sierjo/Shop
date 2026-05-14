@@ -14,4 +14,9 @@ public class OrderRequestDTO {
     private String aptNo;
     private String zipCode;
     private String city;
+
+    private Integer selectedAddressId;
+    private boolean saveNewAddress; // <--  Чекбокс
+
+    private boolean overwriteExisting; // <-- флаг перезаписи существующего адреса
 }
