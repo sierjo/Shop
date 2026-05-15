@@ -9,7 +9,8 @@ function handleAddressSelection() {
         inputs.forEach(input => input.setAttribute('required', 'required'));
         return;
     }
-
+// Очищаем ошибку чекбокса при любом переключении списка
+    clearCheckboxError();
     // Если список есть и в нем выбран сохраненный адрес
     if (select.value !== "") {
         inputs.forEach(input => input.removeAttribute('required'));
@@ -53,14 +54,61 @@ function clearFormFields() {
 }
 
 
-window.onload = function() {
+// Функция для сброса красной ошибки чекбокса
+function clearCheckboxError() {
+    let checkboxLabel = document.querySelector('label[for="saveNewAddress"]');
+    let errorMsg = document.getElementById('checkboxErrorMsg');
+    if (checkboxLabel) checkboxLabel.style.color = '#b78a76'; // Возврат старого цвет
+    if (errorMsg) errorMsg.remove();
+}
+
+window.onload = function () {
     handleAddressSelection();
+
+    // Если ставит галочку, ошибка пропадает
+    let checkbox = document.getElementById('saveNewAddress');
+    if (checkbox) {
+        checkbox.addEventListener('change', function () {
+            if (this.checked) {
+                clearCheckboxError();
+            }
+        });
+    }
 };
 
 
 function validateAndSubmitForm(event) {
     let select = document.getElementById('selectedAddressId');
+    let checkbox = document.getElementById('saveNewAddress');
 
+    // Если выбран "-- Nowy adres --", галочка обязательна
+    if (select && select.value === "") {
+        if (checkbox && !checkbox.checked) {
+            event.preventDefault(); // Остановка отправки формы
+
+            let checkboxLabel = document.querySelector('label[for="saveNewAddress"]');
+
+            // красный текст
+            if (checkboxLabel) {
+                checkboxLabel.style.color = 'red';
+            }
+
+            // текст ошибки
+            if (!document.getElementById('checkboxErrorMsg')) {
+                let errorMsg = document.createElement('span');
+                errorMsg.id = 'checkboxErrorMsg';
+                errorMsg.style.color = 'red';
+                errorMsg.style.fontSize = '12px';
+                errorMsg.style.marginLeft = '10px';
+                errorMsg.innerText = '(Zaznacz pole, aby zapisać nowy adres, lub wybierz istniejący z listy)';
+
+                if (checkboxLabel) {
+                    checkboxLabel.parentNode.appendChild(errorMsg);
+                }
+            }
+            return; // Прерывание функции, пользователь должен поставить галочку
+        }
+    }
     // Проверяем если выбран адрес из списка
     if (select && select.value !== "") {
         let selectedOption = select.options[select.selectedIndex];
