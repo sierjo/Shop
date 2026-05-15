@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,12 +20,6 @@ public class ProductsController {
 
     public ProductsController(ProductsService productsService) {
         this.productsService = productsService;
-    }
-
-    @GetMapping("/products")
-    public String Product(Model model) {
-        model.addAttribute("product", new Products());
-        return "products";
     }
 
     @PostMapping("/products/add")
