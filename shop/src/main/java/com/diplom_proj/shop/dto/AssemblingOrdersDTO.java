@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class AssemblingOrdersDTO {
     private Integer quantityProduct;
-    private Integer SumQuantityesProducts;
+    private Integer sumQuantityesProducts;
     private Integer productId;
     private Integer orderId;
     private String City;

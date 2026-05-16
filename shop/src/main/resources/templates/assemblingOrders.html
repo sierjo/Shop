@@ -1,10 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Сборка заказов</title>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/ForWarehousePages.css}"/>
 </head>
 <body>
+<aside class="sidebar">
+    <h2>Мои заказы в работе</h2>
+    <div id="active-orders-list">
+    </div>
+</aside>
+<main class="main-content">
+    <h2>Доступные заказы по городам</h2>
+    <div id="available-orders-list">
 
+        <div th:each="ord : ${order}" class="order-card" th:id="'order-' + ${ord.orderId}">
+            <div class="order-info">
+                <p><strong>Город:</strong> <span th:text="${ord.city}"></span></p>
+                <p><strong>Заказ №:</strong> <span th:text="${ord.orderId}"></span></p>
+                <p>Кол-во товаров: <span th:text="${ord.sumQuantityesProducts}"></span></p>
+            </div>
+            <button class="btn-take" th:onclick="'takeOrder(this, ' + ${ord.orderId} + ')'">
+                Взять заказ
+            </button>
+        </div>
+    </div>
+</main>
+<script type="text/javascript" th:src="@{/js/assemblingOrders.js}"></script>
 </body>
 </html>

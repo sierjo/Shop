@@ -1,7 +1,7 @@
 package com.diplom_proj.shop.services;
 
 import com.diplom_proj.shop.dto.AssemblingOrdersDTO;
-import com.diplom_proj.shop.entity.OrderItems;
+import com.diplom_proj.shop.entity.Orders;
 import com.diplom_proj.shop.repository.OrderItemRepository;
 import com.diplom_proj.shop.repository.OrderRepository;
 import org.springframework.stereotype.Service;
@@ -22,21 +22,20 @@ public class WarehouseService {
     public List<AssemblingOrdersDTO> getAllOrders() {
 
         // Все заказы
-        List<OrderItems> allOrders = orderItemRepository.findAll();
+        List<Orders> allOrders = orderRepository.findAll();
 
         // пустой список для DTO
         List<AssemblingOrdersDTO> dtoList = new ArrayList<>();
 
-        for (OrderItems item : allOrders) {
+        for (Orders item : allOrders) {
             AssemblingOrdersDTO dto = new AssemblingOrdersDTO();
 
-            dto.setQuantityProduct(item.getQuantityInOrder());
-            dto.setProductId(item.getProducts().getProductId());
-            dto.setOrderId(item.getOrders().getOrderId());
-            dto.setCity(item.getOrders().getCity());
-            dto.setSumQuantityesProducts(orderItemRepository.getSumOfOrdersItemPrices(item.getOrders().getOrderId()));
+            dto.setOrderId(item.getOrderId());
+            dto.setCity(item.getCity());
 
-            // Добавление заполненного DTO в список
+            Integer totalItems = orderItemRepository.getSumOfOrdersItemsInOrder(item.getOrderId());
+            dto.setSumQuantityesProducts(totalItems);
+
             dtoList.add(dto);
         }
         return dtoList;

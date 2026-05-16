@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface OrderItemRepository extends JpaRepository<OrderItems, Integer> {
-    @Query("SELECT COALESCE(SUM(o.quantityInOrder), 0) FROM OrderItems o WHERE o.orders.orderId = :orderId")
-    Integer getSumOfOrdersItemPrices(@Param("order_id") Integer orderId);
+    @Query("SELECT (SUM(o.quantityInOrder)) FROM OrderItems o WHERE o.orders.orderId = :order_id")
+    Integer getSumOfOrdersItemsInOrder(@Param("order_id") Integer orderId);
 }
