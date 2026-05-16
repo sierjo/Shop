@@ -27,6 +27,33 @@
         </div>
     </div>
 </main>
+<div id="orderModal" class="draggable-modal">
+    <div class="modal-header" id="modalHeader">
+        <div id="modalTitle">
+            <span id="modalCity">City: </span><br>
+            <span id="modalOrderId" style="font-size: 14px; font-weight: normal;">Order №: </span>
+        </div>
+        <span class="close-btn" onclick="closeModal()">✖</span>
+    </div>
+
+    <div class="modal-body">
+        <table class="modal-table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Need</th>
+                <th>Collected</th>
+            </tr>
+            </thead>
+            <tbody id="modalTableBody">
+            </tbody>
+        </table>
+
+        <div class="modal-footer">
+            <button id="btnCompleteOrder" class="btn-complete" onclick="completeOrder()">Order completed</button>
+        </div>
+    </div>
+</div>
 <script type="text/javascript" th:src="@{/js/assemblingOrders.js}"></script>
 </body>
 </html>

@@ -1,6 +1,8 @@
 package com.diplom_proj.shop.services;
 
 import com.diplom_proj.shop.dto.AssemblingOrdersDTO;
+import com.diplom_proj.shop.dto.ModalWindowDTO;
+import com.diplom_proj.shop.entity.OrderItems;
 import com.diplom_proj.shop.entity.Orders;
 import com.diplom_proj.shop.repository.OrderItemRepository;
 import com.diplom_proj.shop.repository.OrderRepository;
@@ -39,5 +41,20 @@ public class WarehouseService {
             dtoList.add(dto);
         }
         return dtoList;
+    }
+
+    public List<ModalWindowDTO> getItemsForModalPanel(int orderId) {
+
+        // Все заказы
+        List<OrderItems> order = orderItemRepository.findAllByOrders_OrderId(orderId);
+        List<ModalWindowDTO> modalDTOOrders = new ArrayList<>();
+        for (OrderItems item : order) {
+            ModalWindowDTO dtoItem = new ModalWindowDTO();
+            dtoItem.setProductId(item.getOrderItemId());
+            dtoItem.setProductName(item.getProducts().getProductName());
+            dtoItem.setQuantityRequired(item.getQuantityInOrder());
+            modalDTOOrders.add(dtoItem);
+        }
+        return modalDTOOrders;
     }
 }

@@ -1,11 +1,12 @@
 package com.diplom_proj.shop.controller;
 
 import com.diplom_proj.shop.dto.AssemblingOrdersDTO;
+import com.diplom_proj.shop.dto.ModalWindowDTO;
 import com.diplom_proj.shop.entity.Products;
 import com.diplom_proj.shop.services.WarehouseService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +29,12 @@ public class WarehouseController {
         List<AssemblingOrdersDTO> allAssemblingOrders=warehouseService.getAllOrders();
         model.addAttribute("order", allAssemblingOrders);
         return "assemblingOrders";
+    }
+
+    @PostMapping("/order/modalPanel")
+    @ResponseBody
+    public List<ModalWindowDTO> ModalPanel(@RequestParam("itemId") Integer orderId) {
+        // Поиск всех товаров связанных с этим ордером
+        return warehouseService.getItemsForModalPanel(orderId);
     }
 }
