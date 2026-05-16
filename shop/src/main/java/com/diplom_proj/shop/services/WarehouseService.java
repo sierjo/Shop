@@ -30,15 +30,19 @@ public class WarehouseService {
         List<AssemblingOrdersDTO> dtoList = new ArrayList<>();
 
         for (Orders item : allOrders) {
-            AssemblingOrdersDTO dto = new AssemblingOrdersDTO();
+            // Если ордер помечен как выполненный он не добавляется в список
+            if (item.getOrderStatus().equals("DONE")) continue;
+            else {
+                AssemblingOrdersDTO dto = new AssemblingOrdersDTO();
 
-            dto.setOrderId(item.getOrderId());
-            dto.setCity(item.getCity());
+                dto.setOrderId(item.getOrderId());
+                dto.setCity(item.getCity());
 
-            Integer totalItems = orderItemRepository.getSumOfOrdersItemsInOrder(item.getOrderId());
-            dto.setSumQuantityesProducts(totalItems);
+                Integer totalItems = orderItemRepository.getSumOfOrdersItemsInOrder(item.getOrderId());
+                dto.setSumQuantityesProducts(totalItems);
 
-            dtoList.add(dto);
+                dtoList.add(dto);
+            }
         }
         return dtoList;
     }
@@ -56,5 +60,13 @@ public class WarehouseService {
             modalDTOOrders.add(dtoItem);
         }
         return modalDTOOrders;
+    }
+
+    public boolean completeCollectOrder(int id) {
+        Orders changeStatus = orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Товар не найден"));
+        changeStatus.setOrderStatus("DONE");
+        orderRepository.save(changeStatus);
+        return true;
     }
 }

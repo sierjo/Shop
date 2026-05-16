@@ -30,6 +30,7 @@ document.getElementById('active-orders-list').addEventListener('click', function
 
 // Модвльное Окно
 let currentOpenOrderId = null;
+
 function openModal(orderId, city) {
     currentOpenOrderId = orderId;
 
@@ -120,6 +121,25 @@ function completeOrder() {
         alert("Внимание: Вы собрали не все товары!");
         return;
     }
+    // Отправка id собранного заказа
+    let orderComplete = new URLSearchParams();
+    orderComplete.append('orderId', currentOpenOrderId);
+    fetch('/order/assembling/complete', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: orderComplete
+    })
+        .then(response => {
+            if (response.ok) {
+                alert("Товар собран");
+                document.getElementById('order-' + currentOpenOrderId).remove();
+                closeModal();
+            } else {
+                throw new Error('Ошибка отпраки');
+            }
+        });
 }
 
 
