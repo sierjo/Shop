@@ -21,8 +21,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         boolean hasAnonymousRole = authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_ANONYMOUS"));
         boolean hasMagazynierRole = authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("Magazynier"));
         boolean hasSprzedawcaRole = authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("Sprzedawca"));
-        if (hasKlientRole || hasAnonymousRole || hasMagazynierRole || hasSprzedawcaRole) {
+        if (hasKlientRole || hasAnonymousRole) {
             response.sendRedirect("/strona");
+        } else if (hasMagazynierRole) {
+            response.sendRedirect("/order/assembling");
+        } else if(hasSprzedawcaRole){
+            response.sendRedirect("/seller/home");
         }
     }
 }
