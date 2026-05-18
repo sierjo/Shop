@@ -17,22 +17,20 @@
         <thead>
         <tr>
             <th>Nr zamówienia</th>
+            <th>Full Name</th>
             <th>Addition Date</th>
             <th>Miasto</th>
-            <th>Status</th>
-            <th>Kwota</th>
-            <th>Akcje</th>
+            <th>Totaal</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="order : ${orders}">
-            <td th:text="${order.orderId}">101</td>
-            <td th:text="${order.orderDate}">2026-05-17</td>
-            <td th:text="${order.city}">Warszawa</td>
-            <td>
-                <span class="status-badge" th:text="${order.orderStatus}">DONE</span>
-            </td>
-            <td style="font-weight: bold;" th:text="${order.totalAmount} + ' PLN'"></td>
+            <td th:text="${order.orderId}"></td>
+            <td th:text="${order.fullName}"></td>
+            <td th:text="${order.additionDate}"></td>
+            <td th:text="${order.city}"></td>
+            <td th:text="${order.sumCostOrder} + ' PLN'"></td>
             <td>
                 <button class="btn-details" th:onclick="'takeOrder(this, ' + ${order.getOrderId()} + ')'">
                     Szczegóły

@@ -1,6 +1,6 @@
 package com.diplom_proj.shop.services;
 
-import com.diplom_proj.shop.entity.Orders;
+import com.diplom_proj.shop.dto.DeliveryOrdersDTO;
 import com.diplom_proj.shop.repository.SellersRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ private final SellersRepository sellersRepository;
         this.sellersRepository = sellersRepository;
     }
 
-    public List<Orders> getAllOrders(){
+    public List<DeliveryOrdersDTO> getAllOrders(){
         return sellersRepository.getAllByOrderStatus("DONE");
     }
 }
