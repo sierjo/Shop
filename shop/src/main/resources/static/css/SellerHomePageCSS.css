@@ -87,3 +87,27 @@ body {
     color: #777;
     font-style: italic;
 }
+
+
+
+/* Строка поиска */
+.search-container {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#searchInput {
+    width: 300px;
+    padding: 10px 15px;
+    border: 2px solid #ddd;
+    border-radius: 20px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#searchInput:focus {
+    border-color: #beaaa1;
+    box-shadow: 0 0 5px rgba(190, 170, 161, 0.5);
+}

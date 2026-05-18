@@ -29,8 +29,8 @@ public class AddressServices {
 
             // Если пользователь выбрал перезапись адреса (Нажал "Отмена" в окне)
             if (request.isOverwriteExisting()) {
-                existing.setName(request.getFirstName());
-                existing.setSurname(request.getLastName());
+                existing.setName(request.getFirstName().toUpperCase());
+                existing.setSurname(request.getLastName().toUpperCase());
                 existing.setCountryAddress(request.getCountry());
                 existing.setCityAddress(request.getCity());
                 existing.setStreetAddress(request.getStreet());
@@ -48,8 +48,8 @@ public class AddressServices {
             Address newAddress = new Address();
 
             newAddress.setUser(user);
-            newAddress.setName(request.getFirstName());
-            newAddress.setSurname(request.getLastName());
+            newAddress.setName(request.getFirstName().toUpperCase());
+            newAddress.setSurname(request.getLastName().toUpperCase());
             newAddress.setCountryAddress(request.getCountry());
             newAddress.setCityAddress(request.getCity());
             newAddress.setStreetAddress(request.getStreet());

@@ -10,10 +10,13 @@
 <div class="dashboard-container">
     <div class="dashboard-header">
         <h1>Gotowe zamówienia</h1>
-        <!--        <a th:href="@{/seller/home}" style="color: #b78a76; text-decoration: none; font-weight: bold;">&larr; Powrót</a>-->
     </div>
 
-    <table class="orders-table">
+    <div class="search-container">
+        <input type="text" id="searchInput" onkeyup="filterOrders()" placeholder="Name">
+    </div>
+
+    <table class="orders-table" id="ordersTable">
         <thead>
         <tr>
             <th>Nr zamówienia</th>
@@ -44,6 +47,6 @@
         </tbody>
     </table>
 </div>
-
+<script th:src="@{/js/sellersPages.js}"></script>
 </body>
 </html>
