@@ -3,8 +3,10 @@ package com.diplom_proj.shop.controller;
 import com.diplom_proj.shop.dto.DeliveryOrdersDTO;
 import com.diplom_proj.shop.services.SellersService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -17,9 +19,13 @@ public class SellersController {
     }
 
     @GetMapping("/seller/home")
-    public String SellerHome(Model model) {
-        List<DeliveryOrdersDTO> allOrders = sellersService.getAllOrders();
-        model.addAttribute("orders",allOrders);
+    public String SellerHome() {
         return "sellerHomePage";
+    }
+
+    @PostMapping("/seller/search")
+    @ResponseBody
+    public List<DeliveryOrdersDTO> searchOrders(@RequestParam("findValue") String findValue) {
+        return sellersService.searchOrdersByName(findValue);
     }
 }

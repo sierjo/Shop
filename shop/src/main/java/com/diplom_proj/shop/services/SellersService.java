@@ -14,7 +14,12 @@ private final SellersRepository sellersRepository;
         this.sellersRepository = sellersRepository;
     }
 
-    public List<DeliveryOrdersDTO> getAllOrders(){
-        return sellersRepository.getAllByOrderStatus("DONE");
+//    public List<DeliveryOrdersDTO> getAllOrders(){
+//        return sellersRepository.getAllByOrderStatus("DONE");
+//    }
+
+
+    public List<DeliveryOrdersDTO> searchOrdersByName(String findValue) {
+        return sellersRepository.searchOrdersByName(findValue);
     }
 }

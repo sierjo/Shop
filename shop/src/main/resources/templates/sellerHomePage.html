@@ -7,45 +7,30 @@
 </head>
 <body>
 
-<div class="dashboard-container">
-    <div class="dashboard-header">
-        <h1>Gotowe zamówienia</h1>
-    </div>
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="Name / Surname / Name Surname">
+    <button onclick="startSearch()" id="searchbtn" class="btn-details">Szukaj</button>
+</div>
 
-    <div class="search-container">
-        <input type="text" id="searchInput" onkeyup="filterOrders()" placeholder="Name">
-    </div>
-
-    <table class="orders-table" id="ordersTable">
-        <thead>
-        <tr>
-            <th>Nr zamówienia</th>
-            <th>Full Name</th>
-            <th>Addition Date</th>
-            <th>Miasto</th>
-            <th>Totaal</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="order : ${orders}">
-            <td th:text="${order.orderId}"></td>
-            <td th:text="${order.fullName}"></td>
-            <td th:text="${order.additionDate}"></td>
-            <td th:text="${order.city}"></td>
-            <td th:text="${order.sumCostOrder} + ' PLN'"></td>
-            <td>
-                <button class="btn-details" th:onclick="'takeOrder(this, ' + ${order.getOrderId()} + ')'">
-                    Szczegóły
-                </button>
-            </td>
-        </tr>
-
-        <tr th:if="${#lists.isEmpty(orders)}">
-            <td colspan="6" class="empty-message">Brak gotowych zamówień.</td>
-        </tr>
-        </tbody>
-    </table>
+<table class="orders-table" id="ordersTable">
+    <thead>
+    <tr>
+        <th>Nr zamówienia</th>
+        <th>Full Name</th>
+        <th>Addition Date</th>
+        <th>Miasto</th>
+        <th>Totaal</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody id="ordersTableBody">
+    <tr>
+        <td colspan="6" class="empty-message">To start search: write a Client <b>Name</b> / <b>Surname</b> into a search
+            panel.
+        </td>
+    </tr>
+    </tbody>
+</table>
 </div>
 <script th:src="@{/js/sellersPages.js}"></script>
 </body>
