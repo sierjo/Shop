@@ -31,6 +31,32 @@
     </tr>
     </tbody>
 </table>
+<!--Окно подробной информации Товара-->
+<div id="orderModal" class="draggable-modal">
+    <div class="modal-header" id="modalHeader">
+        <div id="modalTitle">
+            <span id="modalOrderId" style="font-size: 16px; font-weight: bold;">Order №: </span>
+        </div>
+        <span class="close-btn" onclick="closeModal()">✖</span>
+    </div>
+
+    <div class="modal-body">
+        <table class="modal-table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th> </tr>
+            </thead>
+            <tbody id="modalTableBody">
+            </tbody>
+        </table>
+
+        <div class="modal-footer" style="display: flex; justify-content: space-between;">
+            <button id="btnReturnOrder" class="btn-return" onclick="returnOrder()">Zwrot</button>
+            <button id="btnGiveOrder" class="btn-complete" onclick="giveOrder()">Wydaj</button>
+        </div>
+    </div>
 </div>
 <script th:src="@{/js/sellersPages.js}"></script>
 </body>

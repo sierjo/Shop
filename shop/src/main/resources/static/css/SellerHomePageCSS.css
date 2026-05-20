@@ -111,3 +111,101 @@ body {
     border-color: #beaaa1;
     box-shadow: 0 0 5px rgba(190, 170, 161, 0.5);
 }
+
+
+
+ /*Модальное Окно*/
+.draggable-modal {
+    display: none;
+    position: fixed;
+    top: 150px;
+    left: calc(50% - 250px);
+    width: 500px;
+    background-color: #b8b8b8;
+    border: 3px solid #000;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+    z-index: 1000;
+}
+
+.modal-header {
+    padding: 10px;
+    background-color: #a0a0a0;
+    border-bottom: 2px solid #000;
+    cursor: move;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-weight: bold;
+}
+
+.close-btn {
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: #d32f2f;
+}
+
+.modal-body {
+    padding: 15px;
+}
+
+.modal-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border: 2px solid #000;
+    background-color: #fff;
+}
+
+.modal-table th, .modal-table td {
+    border: 2px solid #000;
+    padding: 10px;
+    text-align: center;
+}
+
+.modal-table th {
+    background-color: #a0a0a0;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/*Кнопка Отдать*/
+.btn-complete {
+    background: transparent;
+    border: none;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: underline;
+    color: #333;
+    transition: color 0.3s;
+}
+
+.btn-complete:hover {
+    color: #27ae60;
+}
+
+/*Кнопка "Возврат"*/
+.btn-return {
+    background: transparent;
+    border: none;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: underline;
+    color: #d32f2f;
+    transition: color 0.3s;
+}
+
+.btn-return:hover {
+    color: #9a0007;
+}

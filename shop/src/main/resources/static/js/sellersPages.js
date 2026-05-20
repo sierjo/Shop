@@ -49,7 +49,7 @@ function startSearch() {
                 <td>${order.city}</td>
                 <td>${order.sumCostOrder} PLN</td>
                 <td>
-                    <button class="btn-details" onclick="takeOrder(this, ${order.orderId})">Szczegóły</button>
+                    <button class="btn-details" onclick="informationDetails(${order.orderId})">Szczegóły</button> 
                 </td>
             `;
                 tableBody.appendChild(tr);
@@ -68,3 +68,118 @@ document.getElementById("searchInput").addEventListener("keypress", function (ev
         startSearch();
     }
 });
+
+let currentOpenOrderId = null;
+
+function informationDetails(orderId) {
+    currentOpenOrderId = orderId; // ID заказа
+
+    // Шапка окна
+    document.getElementById('modalOrderId').innerText = 'Order №: ' + orderId;
+
+    let tableBody = document.getElementById('modalTableBody');
+    tableBody.innerHTML = '<tr><td colspan="3">Loading...</td></tr>';
+
+    let formData = new URLSearchParams();
+    formData.append('itemId', orderId);
+
+    fetch('/seller/order/details', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Ошибка сети');
+            }
+            return response.json();
+        })
+        .then(realItems => {
+            tableBody.innerHTML = '';
+
+            realItems.forEach(item => {
+                let tr = document.createElement('tr');
+
+                let itemPrice = item.itemPrice;
+
+                tr.innerHTML = `
+                <td style="text-align: left;">${item.productName}</td>
+                <td>${item.quantity}</td>
+                <td>${itemPrice} PLN</td>
+            `;
+                tableBody.appendChild(tr);
+            });
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            tableBody.innerHTML = '<tr><td colspan="3" style="color:red;">Products loading error</td></tr>';
+        });
+
+    let modal = document.getElementById('orderModal');
+    modal.style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('orderModal').style.display = 'none';
+    currentOpenOrderId = null;
+}
+
+// Кнопки Возврата и Выдачи
+function giveOrder() {
+}
+
+function returnOrder() {
+}
+
+
+// Перетаскивание окна
+dragElement(document.getElementById("orderModal"));
+
+function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    var header = document.getElementById("modalHeader");
+
+    // Перетаскивание за верх
+    if (header) {
+        header.onmousedown = dragMouseDown;
+    }
+
+    function dragMouseDown(e) {
+        e = e || window.event;
+
+        if (e.target.className === 'close-btn') return;
+
+        e.preventDefault();
+
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+
+
+        document.onmouseup = closeDragElement;
+
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+
+
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+
+
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+}

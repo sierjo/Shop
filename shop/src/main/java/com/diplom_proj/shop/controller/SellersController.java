@@ -1,6 +1,7 @@
 package com.diplom_proj.shop.controller;
 
 import com.diplom_proj.shop.dto.DeliveryOrdersDTO;
+import com.diplom_proj.shop.dto.DeliveryPositionOrdersDTO;
 import com.diplom_proj.shop.services.SellersService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,5 +28,12 @@ public class SellersController {
     @ResponseBody
     public List<DeliveryOrdersDTO> searchOrders(@RequestParam("findValue") String findValue) {
         return sellersService.searchOrdersByName(findValue);
+    }
+
+    @PostMapping("/seller/order/details")
+    @ResponseBody
+    public List<DeliveryPositionOrdersDTO> ModalPanel(@RequestParam("itemId") Integer orderId) {
+        // Поиск всех товаров в ордере
+        return sellersService.getItemsForModalPanel(orderId);
     }
 }
