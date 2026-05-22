@@ -42,6 +42,7 @@ function startSearch() {
             // Таблица для элементв
             orders.forEach(order => {
                 let tr = document.createElement('tr');
+                tr.id = `order-row${order.orderId}`
                 tr.innerHTML = `
                 <td>${order.orderId}</td>
                 <td>${order.fullName}</td>
@@ -101,9 +102,7 @@ function informationDetails(orderId) {
 
             realItems.forEach(item => {
                 let tr = document.createElement('tr');
-
                 let itemPrice = item.itemPrice;
-
                 tr.innerHTML = `
                 <td style="text-align: left;">${item.productName}</td>
                 <td>${item.quantity}</td>
@@ -128,9 +127,47 @@ function closeModal() {
 
 // Кнопки Возврата и Выдачи
 function giveOrder() {
+    let formData = new URLSearchParams();
+    formData.append('orderId', currentOpenOrderId);
+
+    fetch('/seller/clientPicksUp', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Server Error');
+            } else {
+                let row = document.getElementById(`order-row${currentOpenOrderId}`) // Id Строки с ордером
+                row.remove(); // Удаление этой строки со строницы
+                closeModal();
+            }
+        })
 }
 
 function returnOrder() {
+    let formData = new URLSearchParams();
+    formData.append('orderId', currentOpenOrderId);
+
+    fetch('/seller/clientRefund', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Server Error');
+            } else {
+                let row = document.getElementById(`order-row${currentOpenOrderId}`) // Id Строки с ордером
+                row.remove(); // Удаление этой строки со строницы
+                closeModal();
+            }
+        })
 }
 
 
