@@ -28,6 +28,94 @@ body {
     margin: 0;
 }
 
+/* HEADER Styles      ↓↓↓*/
+
+.my-custom-icon {
+    width: 24px;
+    height: 24px;
+    fill: rgb(101, 101, 101);
+    transition: fill 0.3s ease;
+    vertical-align: middle;
+}
+
+.profile-link:hover .my-custom-icon {
+    fill: #beaaa1;
+}
+
+.main-header {
+    background-color: #ffffff;
+    padding: 10px 20px;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 1em;
+}
+
+.header-logo {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.auth-section {
+    display: flex;
+    align-items: center;
+}
+
+/* Блок профиля (Email + Выход) */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #555;
+}
+
+.user-email {
+    font-size: 0.9em;
+}
+
+/* Кнопки в шапке */
+.btn-login, .btn-logout {
+    text-decoration: none;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Кнопка Войти */
+/*.btn-login {*/
+/*    background-color: #beaaa1;*/
+/*    color: white;*/
+/*}*/
+
+/*.btn-login:hover {*/
+/*    background-color: #a38d82;*/
+/*}*/
+
+/* Кнопка Выйти */
+.btn-logout {
+    color: #d32f2f;
+    border: 1px solid #d32f2f;
+}
+
+.btn-logout:hover {
+    background-color: #d32f2f;
+    color: white;
+}
+/* HEADER Styles      ↑↑↑*/
+
 /* Стили таблицы */
 .orders-table {
     width: 100%;
@@ -70,7 +158,6 @@ body {
     color: white;
     padding: 6px 12px;
     text-decoration: none;
-    border-radius: 4px;
     font-size: 14px;
     font-weight: bold;
     transition: background 0.3s;
@@ -92,26 +179,20 @@ body {
 
 /* Строка поиска */
 .search-container {
-    margin-bottom: 15px;
-    display: flex;
+    width: 82%;
     justify-content: flex-end;
+    display: flex;
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden; /* Кнопка повторяет форму окна ввода */
 }
-
 #searchInput {
-    width: 300px;
-    padding: 10px 15px;
-    border: 2px solid #ddd;
-    border-radius: 20px;
-    font-size: 14px;
+    width: 100%;
+    padding: 5px 10px;
+    border: none;
     outline: none;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    font-size: 13px;
 }
-
-#searchInput:focus {
-    border-color: #beaaa1;
-    box-shadow: 0 0 5px rgba(190, 170, 161, 0.5);
-}
-
 
 
  /*Модальное Окно*/

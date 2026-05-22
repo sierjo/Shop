@@ -2,9 +2,12 @@ package com.diplom_proj.shop.controller;
 
 import com.diplom_proj.shop.dto.DeliveryOrdersDTO;
 import com.diplom_proj.shop.dto.DeliveryPositionOrdersDTO;
+import com.diplom_proj.shop.dto.UsersDTO;
 import com.diplom_proj.shop.services.SellersService;
+import com.diplom_proj.shop.services.UsersService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,13 +18,17 @@ import java.util.List;
 @Controller
 public class SellersController {
     private final SellersService sellersService;
+    private final UsersService usersService;
 
-    public SellersController(SellersService sellersService) {
+    public SellersController(SellersService sellersService, UsersService usersService) {
         this.sellersService = sellersService;
+        this.usersService = usersService;
     }
 
     @GetMapping("/seller/home")
-    public String SellerHome() {
+    public String SellerHome(Model model) {
+        UsersDTO user = usersService.dtouser();
+        model.addAttribute("currentUser", user);
         return "sellerHomePage";
     }
 
