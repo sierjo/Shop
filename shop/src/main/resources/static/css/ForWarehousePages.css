@@ -6,14 +6,101 @@ body {
     background-color: #f4f4f9;
 }
 
-/* Поле "Заказы в работе" */
+
+/* HEADER Styles      ↓↓↓*/
+
+.my-custom-icon {
+    width: 24px;
+    height: 24px;
+    fill: rgb(101, 101, 101);
+    transition: fill 0.3s ease;
+    vertical-align: middle;
+}
+
+.profile-link:hover .my-custom-icon {
+    fill: #beaaa1;
+}
+
+.main-header {
+    padding: 15px 30px;
+}
+
+.header-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-logo {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.auth-section {
+    display: flex;
+    align-items: center;
+}
+
+/* Блок профиля (Email + Выход) */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #555;
+}
+
+.user-email {
+    font-size: 0.9em;
+}
+
+/* Кнопки в шапке */
+/*.btn-login, .btn-logout {*/
+.btn-logout {
+    text-decoration: none;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Кнопка Войти */
+/*.btn-login {*/
+/*    background-color: #beaaa1;*/
+/*    color: white;*/
+/*}*/
+
+/*.btn-login:hover {*/
+/*    background-color: #a38d82;*/
+/*}*/
+
+/* Кнопка Выйти */
+.btn-logout {
+    color: #d32f2f;
+    border: 1px solid #d32f2f;
+}
+
+.btn-logout:hover {
+    background-color: #d32f2f;
+    color: white;
+}
+/* HEADER Styles      ↑↑↑*/
+
+/* Поле Заказы в работе */
 .sidebar {
-    width: 250px;
+    width: 17em;
     background-color: #2c3e50;
     color: white;
-    padding: 20px;
+    padding: 39px 20px;
     box-sizing: border-box;
-    overflow-y: auto;
+    overflow-y: auto;  /* прокрутка боковой панели при большои коллве заказов */
 }
 
 .sidebar h2 {
@@ -23,7 +110,7 @@ body {
     margin-top: 0;
 }
 
-/* Поле "Доступные заказы" */
+/* Поле 'Доступные заказы' */
 .main-content {
     flex-grow: 1;
     padding: 20px;
@@ -34,7 +121,14 @@ body {
 .main-content h2 {
     color: #333;
 }
-
+/* Контейнер доступных заказов */
+#available-orders-list {
+    display: grid;
+    /* Размер карточек */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 30px;
+}
 /* Карточки доступных заказов */
 .order-card {
     background: white;

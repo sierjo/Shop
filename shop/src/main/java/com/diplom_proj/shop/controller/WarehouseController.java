@@ -2,7 +2,9 @@ package com.diplom_proj.shop.controller;
 
 import com.diplom_proj.shop.dto.AssemblingOrdersDTO;
 import com.diplom_proj.shop.dto.ModalWindowDTO;
+import com.diplom_proj.shop.dto.UsersDTO;
 import com.diplom_proj.shop.entity.Products;
+import com.diplom_proj.shop.services.UsersService;
 import com.diplom_proj.shop.services.WarehouseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,9 +16,11 @@ import java.util.List;
 @Controller
 public class WarehouseController {
     private final WarehouseService warehouseService;
+    private final UsersService usersService;
 
-    public WarehouseController(WarehouseService warehouseService) {
+    public WarehouseController(WarehouseService warehouseService, UsersService usersService) {
         this.warehouseService = warehouseService;
+        this.usersService = usersService;
     }
 
     @GetMapping("/products")
@@ -28,6 +32,8 @@ public class WarehouseController {
     @GetMapping("/order/assembling")
     public String Collection(Model model) {
         List<AssemblingOrdersDTO> allAssemblingOrders = warehouseService.getAllOrders();
+        UsersDTO user = usersService.dtouser();
+        model.addAttribute("currentUser", user);
         model.addAttribute("order", allAssemblingOrders);
         return "assemblingOrders";
     }
