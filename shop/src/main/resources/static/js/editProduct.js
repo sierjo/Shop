@@ -43,10 +43,16 @@ function saveEdit(id) {
     params.append('price', newPrice);
     params.append('description', newDesc);
 
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
     // Отправка в метод контроллера `updateProductParameters`
     fetch('/products/update-product', {
         method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            [csrfHeader]: csrfToken // Передача токена на сервер!
+        },
         body: params // Передача коллекции данных на контроллер
     })
         .then(response => {
@@ -64,8 +70,14 @@ function saveEdit(id) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
     fetch('/products/favoriteProduct/exist', {
-        method: 'POST'
+        method: 'POST',
+        headers: {
+            [csrfHeader]: csrfToken // Передача токена на сервер!
+        }
     })
         .then(response => {
             if (response.ok) {
@@ -96,7 +108,10 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error('Ошибка:', error));
 
     fetch('/strona/userCart/existAllCartItems', {
-        method: 'POST'
+        method: 'POST',
+        headers: {
+            [csrfHeader]: csrfToken // Передача токена на сервер!
+        }
     })
         .then(response => {
             if (response.ok) {
@@ -134,10 +149,15 @@ function addTOFavorite(productId) {
 
     params.append('productId', productId);
 
+    // Токен
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
     // Отправка в метод контроллера `updateProductParameters`
     fetch('/strona/favoriteProduct', {
         method: 'POST',
-
+        headers: {
+            [csrfHeader]: csrfToken // Передача токена на сервер!
+        },
         body: params // Передача коллекции данных на контроллер
     })
         .then(response => {
@@ -189,26 +209,31 @@ function addTOCart(productId) {
 
     // Создание объекта с параметрами
     let params = new URLSearchParams();
-
     params.append('productId', productId);
+
+    // Токен
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
     // Отправка в контроллер по пути '/strona/addToCartItem'
     fetch('/strona/addToCartItem', {
         method: 'POST',
-
+        headers: {
+            [csrfHeader]: csrfToken// Передача токена на сервер!
+        },
         body: params // Передача коллекции данных на контроллер
     })
         .then(response => {
             if (response.ok) {
                 let oldIcon = document.getElementById('cart-add' + productId)
                 oldIcon.outerHTML = `
-<svg id="cart-added${productId}" xmlns="http://www.w3.org/2000/svg" width="17" height="12" viewBox="0 0 32.00 32.00"
-data-guides="{&quot;vertical&quot;:[],&quot;horizontal&quot;:[]}">
-<defs/>
-<path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1" stroke-opacity="1"
-id="tSvg18a1ca1f33d" title="Path 3"
-d="M3.9996 5.0007C4.8329 5.1673 5.6661 5.334 6.4994 5.5006C6.4994 5.5006 6.4994 5.5006 6.4994 5.5006C7.3064 9.0516 8.1134 12.6025 8.9205 16.1534C8.9714 16.3772 8.9431 16.6119 8.8404 16.8173C8.634 17.23 8.4276 17.6428 8.2212 18.0555C8.0815 18.335 8.0815 18.6639 8.2212 18.9434C8.2306 18.9621 8.2399 18.9807 8.2492 18.9994C8.4024 19.3058 8.7156 19.4994 9.0582 19.4994C13.5381 19.4994 18.018 19.4994 22.4979 19.4994"/><path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1" stroke-opacity="1" id="tSvg1cf7cd5add" title="Ellipse 1" d="M20.9981 20.8672C21.5503 20.8672 21.998 21.3044 21.998 21.8436C21.998 22.3829 21.5503 22.82 20.9981 22.82C20.4458 22.82 19.9982 22.3829 19.9982 21.8436C19.9982 21.3044 20.4458 20.8672 20.9981 20.8672Z" style="transform-origin: -4979px -4978.16px;"/><path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1" stroke-opacity="1" id="tSvgef911bd63c" title="Ellipse 2" d="M10.9727 20.9332C11.5104 20.9332 11.9464 21.3408 11.9464 21.8436C11.9464 22.3464 11.5104 22.7541 10.9727 22.7541C10.435 22.7541 9.9991 22.3464 9.9991 21.8436C9.9991 21.3408 10.435 20.9332 10.9727 20.9332Z" style="transform-origin: -4989.03px -4978.16px;"/><path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1" stroke-opacity="1" id="tSvg16808f0224d" title="Path 5" d="M9.2679 8.0244C8.8802 8.0123 8.5865 8.3715 8.6754 8.7491C9.2447 11.1687 9.814 13.5883 10.3833 16.0079C10.4499 16.2908 10.7128 16.4832 11.0028 16.4608C14.9855 16.1545 18.9683 15.8482 22.9511 15.5418C23.2705 15.5172 23.53 15.274 23.5754 14.9569C23.849 13.0418 24.1226 11.1268 24.3961 9.2118C24.4503 8.8323 24.1626 8.4899 23.7794 8.4779C18.9422 8.3267 14.1051 8.1756 9.2679 8.0244Z"/><path fill="transparent" stroke="#ff5f00" fill-opacity="1" stroke-width="1" stroke-opacity="1" title="Rectangle 1" d="M15.9979 9.75C15.9979 9.75 15.9979 9.75 15.9979 9.75H20.9979C20.9979 9.75 20.9979 9.75 20.9979 9.75V14.75C20.9979 14.75 20.9979 14.75 20.9979 14.75H15.9979C15.9979 14.75 15.9979 14.75 15.9979 14.75Z" id="tSvg3c330df791" style=""/><path fill="transparent" fill-opacity="1" stroke="#ff5f00" stroke-opacity="0.82" stroke-width="1" id="tSvgdf4e50ed10" title="Rectangle 2" d="M16.998 10.75H19.998V13.75H16.998Z" style="transform-origin: 18.5px 12.25px;"/><path fill="transparent" fill-opacity="1" stroke="#ff5f00" stroke-opacity="0.67" stroke-width="1" id="tSvg12b933dddf7" title="Rectangle 3" d="M17.998 11.75H18.998V12.75H17.998Z" style="transform-origin: 18.5px 12.25px;"/><path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1" stroke-opacity="1" id="tSvg5821b5917a" title="Path 6" d="M12.4998 16.4996C12.4998 16.4996 11.9999 8.0004 11.9999 8.0004M15.4995 16.4996C15.4995 16.4996 14.9996 8.0004 14.9996 8.0004M18.4993 15.9997C18.4993 15.9997 18.4993 8.0004 18.4993 8.0004M21.499 15.9997C21.499 15.9997 21.9989 8.0004 21.9989 8.0004M9.0001 11.0001C9.0001 11.0001 23.9988 11.0001 23.9988 11.0001M9.5001 13.9999C9.5001 13.9999 23.9988 13.4999 23.9988 13.4999"/><path fill="transparent" fill-opacity="1" stroke="#ff9f00" stroke-opacity="1" stroke-width="1" id="tSvg16762b6e096" title="Rectangle 4" d="M16 3H19.998V6.9422H16Z" style="transform-origin: 18px 4.97px;"/><path fill="transparent" fill-opacity="1" stroke="#b37d20" stroke-opacity="1" stroke-width="1" id="tSvg155e24ee8f3" title="Rectangle 5" d="M17 4H18.998V5.9422H17Z" style="transform-origin: 18px 4.97px;"/><path fill="transparent" fill-opacity="1" stroke="#ba6a2b" stroke-opacity="1" stroke-width="1" id="tSvgee833c2169" title="Rectangle 8" d="M17.999 4.9711H18V5H17.999Z" style="transform-origin: 18px 4.99px;"/><path fill="transparent" fill-opacity="1" stroke="#c75f17" stroke-opacity="1" stroke-width="1" id="tSvg882d7f83d9" title="Rectangle 13" d="M11 1.1716L13.8284 4L11 6.8284L8.1716 4Z" style="transform-origin: 11px 4px;"/><path fill="transparent" stroke="#e3a000" fill-opacity="1" stroke-width="1" stroke-opacity="1" title="Rectangle 14" d="M11 2.5858C11 2.5858 11 2.5858 11 2.5858L12.4142 4C12.4142 4 12.4142 4 12.4142 4L11 5.4142C11 5.4142 11 5.4142 11 5.4142L9.5858 4C9.5858 4 9.5858 4 9.5858 4Z" id="tSvg187866a81e8"/>
-</svg>`;
+                    <svg id="cart-added${productId}" xmlns="http://www.w3.org/2000/svg" width="17" height="12" viewBox="0 0 32.00 32.00"
+                    data-guides="{&quot;vertical&quot;:[],&quot;horizontal&quot;:[]}">
+                    <defs/>
+                    <path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1" stroke-opacity="1"
+                    id="tSvg18a1ca1f33d" title="Path 3"
+                    d="M3.9996 5.0007C4.8329 5.1673 5.6661 5.334 6.4994 5.5006C6.4994 5.5006 6.4994 5.5006 6.4994 5.5006C7.3064 9.0516 8.1134 12.6025 8.9205 16.1534C8.9714 16.3772 8.9431 16.6119 8.8404 16.8173C8.634 17.23 8.4276 17.6428 8.2212 18.0555C8.0815 18.335 8.0815 18.6639 8.2212 18.9434C8.2306 18.9621 8.2399 18.9807 8.2492 18.9994C8.4024 19.3058 8.7156 19.4994 9.0582 19.4994C13.5381 19.4994 18.018 19.4994 22.4979 19.4994"/><path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1" stroke-opacity="1" id="tSvg1cf7cd5add" title="Ellipse 1" d="M20.9981 20.8672C21.5503 20.8672 21.998 21.3044 21.998 21.8436C21.998 22.3829 21.5503 22.82 20.9981 22.82C20.4458 22.82 19.9982 22.3829 19.9982 21.8436C19.9982 21.3044 20.4458 20.8672 20.9981 20.8672Z" style="transform-origin: -4979px -4978.16px;"/><path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1" stroke-opacity="1" id="tSvgef911bd63c" title="Ellipse 2" d="M10.9727 20.9332C11.5104 20.9332 11.9464 21.3408 11.9464 21.8436C11.9464 22.3464 11.5104 22.7541 10.9727 22.7541C10.435 22.7541 9.9991 22.3464 9.9991 21.8436C9.9991 21.3408 10.435 20.9332 10.9727 20.9332Z" style="transform-origin: -4989.03px -4978.16px;"/><path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1" stroke-opacity="1" id="tSvg16808f0224d" title="Path 5" d="M9.2679 8.0244C8.8802 8.0123 8.5865 8.3715 8.6754 8.7491C9.2447 11.1687 9.814 13.5883 10.3833 16.0079C10.4499 16.2908 10.7128 16.4832 11.0028 16.4608C14.9855 16.1545 18.9683 15.8482 22.9511 15.5418C23.2705 15.5172 23.53 15.274 23.5754 14.9569C23.849 13.0418 24.1226 11.1268 24.3961 9.2118C24.4503 8.8323 24.1626 8.4899 23.7794 8.4779C18.9422 8.3267 14.1051 8.1756 9.2679 8.0244Z"/><path fill="transparent" stroke="#ff5f00" fill-opacity="1" stroke-width="1" stroke-opacity="1" title="Rectangle 1" d="M15.9979 9.75C15.9979 9.75 15.9979 9.75 15.9979 9.75H20.9979C20.9979 9.75 20.9979 9.75 20.9979 9.75V14.75C20.9979 14.75 20.9979 14.75 20.9979 14.75H15.9979C15.9979 14.75 15.9979 14.75 15.9979 14.75Z" id="tSvg3c330df791" style=""/><path fill="transparent" fill-opacity="1" stroke="#ff5f00" stroke-opacity="0.82" stroke-width="1" id="tSvgdf4e50ed10" title="Rectangle 2" d="M16.998 10.75H19.998V13.75H16.998Z" style="transform-origin: 18.5px 12.25px;"/><path fill="transparent" fill-opacity="1" stroke="#ff5f00" stroke-opacity="0.67" stroke-width="1" id="tSvg12b933dddf7" title="Rectangle 3" d="M17.998 11.75H18.998V12.75H17.998Z" style="transform-origin: 18.5px 12.25px;"/><path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1" stroke-opacity="1" id="tSvg5821b5917a" title="Path 6" d="M12.4998 16.4996C12.4998 16.4996 11.9999 8.0004 11.9999 8.0004M15.4995 16.4996C15.4995 16.4996 14.9996 8.0004 14.9996 8.0004M18.4993 15.9997C18.4993 15.9997 18.4993 8.0004 18.4993 8.0004M21.499 15.9997C21.499 15.9997 21.9989 8.0004 21.9989 8.0004M9.0001 11.0001C9.0001 11.0001 23.9988 11.0001 23.9988 11.0001M9.5001 13.9999C9.5001 13.9999 23.9988 13.4999 23.9988 13.4999"/><path fill="transparent" fill-opacity="1" stroke="#ff9f00" stroke-opacity="1" stroke-width="1" id="tSvg16762b6e096" title="Rectangle 4" d="M16 3H19.998V6.9422H16Z" style="transform-origin: 18px 4.97px;"/><path fill="transparent" fill-opacity="1" stroke="#b37d20" stroke-opacity="1" stroke-width="1" id="tSvg155e24ee8f3" title="Rectangle 5" d="M17 4H18.998V5.9422H17Z" style="transform-origin: 18px 4.97px;"/><path fill="transparent" fill-opacity="1" stroke="#ba6a2b" stroke-opacity="1" stroke-width="1" id="tSvgee833c2169" title="Rectangle 8" d="M17.999 4.9711H18V5H17.999Z" style="transform-origin: 18px 4.99px;"/><path fill="transparent" fill-opacity="1" stroke="#c75f17" stroke-opacity="1" stroke-width="1" id="tSvg882d7f83d9" title="Rectangle 13" d="M11 1.1716L13.8284 4L11 6.8284L8.1716 4Z" style="transform-origin: 11px 4px;"/><path fill="transparent" stroke="#e3a000" fill-opacity="1" stroke-width="1" stroke-opacity="1" title="Rectangle 14" d="M11 2.5858C11 2.5858 11 2.5858 11 2.5858L12.4142 4C12.4142 4 12.4142 4 12.4142 4L11 5.4142C11 5.4142 11 5.4142 11 5.4142L9.5858 4C9.5858 4 9.5858 4 9.5858 4Z" id="tSvg187866a81e8"/>
+                    </svg>`;
             } else if (response.status === 409) {
 
                 let oldIcon = document.getElementById('cart-add' + productId)

@@ -56,18 +56,19 @@ public class CartItemsServices {
     }
 
     public List<Integer> getAllUsersProductIdInCart() {
+
         // Текущий пользователя
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        // Достаем пользователя из базы данных
-        Users user = usersRepository.findByEmail(authentication.getName())
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
 
         // Если пользователь не авторизован, прерываемся
         if (authentication.getName().equals("ROLE_ANONYMOUS")) {
             return Collections.emptyList();
         }
+        // Достаем пользователя из базы данных
+        Users user = usersRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
 
-        if (user.getRoleId().getUserTypeName().equals("Klient") && cartRepository.existsCartsByUser_UserId(user.getUserId())) {
+        if (cartRepository.existsCartsByUser_UserId(user.getUserId())) {
             // Если это Клиент - обращаемся к репозиторию и возвращаем список ID его товаров
             System.out.println("List PRODUCTS");
             System.out.println(cartItemsRepository.getAllProductsIdsInCartByCartId(cartRepository.findCartsByUser_UserId(user.getUserId()).getCartsId()));

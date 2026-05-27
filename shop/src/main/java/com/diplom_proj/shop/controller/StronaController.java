@@ -92,17 +92,7 @@ public class StronaController {
     public ResponseEntity<List<Integer>> ProductExistInCart() {
 
         List<Integer> addedProductsInUserCart = cartItemsServices.getAllUsersProductIdInCart();
-
-        if (addedProductsInUserCart.isEmpty()) {
-
-            // 409 Conflict (Этот товар уже был добавлен в избранное)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
-        } else {
-            return ResponseEntity.ok(addedProductsInUserCart); // 200 OK
-        }
-//        // 400 Bad Request (Товара с таким ID не существует)
-//        return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(addedProductsInUserCart); // 200 OK
     }
 
     @PostMapping("/strona/addToCartItem")
@@ -136,16 +126,15 @@ public class StronaController {
     public ResponseEntity<List<Integer>> favoriteProductExist() {
 
         List<Integer> favoriteIds = usersService.getAllFUsersProduct();
-
-        if (favoriteIds.isEmpty()) {
-
-            // 409 Conflict (Этот товар уже был добавлен в избранное)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
-        } else {
-            return ResponseEntity.ok(favoriteIds); // 200 OK
-        }
-//        // 400 Bad Request (Товара с таким ID не существует)
-//        return ResponseEntity.badRequest().build();
+//
+//        if (favoriteIds.isEmpty()) {
+//
+//            // 409 Conflict (Этот товар уже был добавлен в избранное)
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//
+//        } else {
+//            return ResponseEntity.ok(favoriteIds); // 200 OK
+//        }
+        return ResponseEntity.ok(favoriteIds); // 200 OK
     }
 }

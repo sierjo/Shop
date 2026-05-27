@@ -59,6 +59,7 @@ public class UsersService {
         }
         return usersDTO;
     }
+
     public Users getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -117,16 +118,16 @@ public class UsersService {
     public List<Integer> getAllFUsersProduct() {
         // Текущий пользователя
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        // Достаем пользователя из базы данных
-        Users user = usersRepository.findByEmail(authentication.getName())
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
 
         // Если пользователь не авторизован, прерываемся
         if (authentication.getName().equals("ROLE_ANONYMOUS")) {
             return Collections.emptyList();
         }
+        // Достаем пользователя из базы данных
+        Users user = usersRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
 
-        if (user.getRoleId().getUserTypeName().equals("Klient")) {
+        if (user.isActive()) {
             // Если это Клиент - обращаемся к репозиторию и возвращаем список ID его товаров
             return favoriteProductRepository.getAllProductsFUdByUsers(user.getUserId());
         }
