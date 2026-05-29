@@ -56,6 +56,7 @@ public class UsersService {
         UsersDTO usersDTO = new UsersDTO();
         if (user.isPresent()) {
             usersDTO.setEmail(user.get().getEmail());
+            usersDTO.setId(user.get().getUserId());
         }
         return usersDTO;
     }

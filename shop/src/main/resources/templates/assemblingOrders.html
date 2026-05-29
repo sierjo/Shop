@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Сборка заказов</title>
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/ForWarehousePages.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/ChatCSS.css}"/>
 </head>
 <body>
 <aside class="sidebar">
@@ -24,7 +25,7 @@
             <div class="auth-section">
                 <div sec:authorize="isAuthenticated()" class="user-profile">
                     <div class="user-info">
-
+                        <button class="btn-chat" th:onclick="'startChat(\'' + ${currentUser.id} + '\')'">Chat</button>
                         <a th:href="@{/order/assembling}" class="profile-link">
                             <svg class="my-custom-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
                                 <path d="M16 16C11.3812 16 8.4944 11 10.8038 7C13.1132 3 18.8868 3 21.1962 7C21.72287.9121 22 8.9468
@@ -82,6 +83,29 @@
         </div>
     </div>
 </div>
+
+
+
+
+<!--CHAT          ↓↓↓↓↓↓-->
+<div id="chatModal" class="draggable-modal chat-modal" style="display: none;">
+
+    <div class="modal-header">
+        <span id="chatTitle" class="chat-title">Рабочий чат</span>
+        <span class="close-btn" onclick="closeChat()">✖</span>
+    </div>
+
+    <div class="modal-body chat-area" id="chatArea">
+    </div>
+
+    <div class="modal-footer chat-footer">
+        <input type="text" id="messageInput" class="chat-input" placeholder="Введите сообщение...">
+        <button onclick="sendMessage()" class="btn-chat-send">Отправить</button>
+    </div>
+</div>
+<!--CHAT          ↑↑↑↑↑↑-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script type="text/javascript" th:src="@{/js/assemblingOrders.js}"></script>
 </body>
 </html>

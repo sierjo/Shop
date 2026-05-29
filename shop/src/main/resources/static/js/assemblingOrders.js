@@ -183,3 +183,88 @@ function dragElement(elmnt) {
         document.onmousemove = null;
     }
 }
+
+
+// CHAT             ↓↓↓↓↓
+let stompClient = null;
+let currentSender = "";
+
+function startChat(senderEmail) {
+    currentSender = senderEmail;
+
+    // Оодальное окно
+    document.getElementById('chatModal').style.display = 'block';
+
+    // проверка на подключение
+    if (stompClient === null) {
+        // Подключение к эндпоинту в WebSocketConfig
+        let socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+
+            // Подключение к каналу
+            stompClient.subscribe('/topic/public', function (messageOutput) {
+                //данные с JSON
+                let message = JSON.parse(messageOutput.body);
+                showMessage(message.sender, message.content);
+            });
+        });
+    }
+}
+
+function closeChat() {
+    document.getElementById('chatModal').style.display = 'none';
+}
+
+function sendMessage() {
+    let messageContent = document.getElementById('messageInput').value;
+
+    if (messageContent && stompClient) {
+        let chatMessage = {
+            sender: currentSender,
+            content: messageContent
+        };
+
+
+        stompClient.send("/app/chat.send", {}, JSON.stringify(chatMessage));
+
+        document.getElementById('messageInput').value = '';
+    }
+}
+
+
+function showMessage(sender, content) {
+    let chatArea = document.getElementById('chatArea');
+
+    // строки сообщения
+    let wrapper = document.createElement('div');
+    wrapper.className = 'chat-message-wrapper';
+
+    // отправитель
+    let senderName = document.createElement('div');
+    senderName.className = 'chat-sender-name';
+    senderName.innerText = sender;
+
+    // Само сообщение (пузырь)
+    let messageBubble = document.createElement('div');
+    messageBubble.innerText = content;
+
+    // классы в зависимости от того кто отправил
+    if (sender === currentSender) {
+        messageBubble.className = 'chat-message me';
+        // ответ на сообшение справа
+        senderName.style.alignSelf = 'flex-end';
+    } else {
+        messageBubble.className = 'chat-message other';
+    }
+
+    wrapper.appendChild(senderName);
+    wrapper.appendChild(messageBubble);
+    chatArea.appendChild(wrapper);
+
+    // прокрутка вниз
+    chatArea.scrollTop = chatArea.scrollHeight;
+}
+// CHAT             ↑↑↑↑↑
