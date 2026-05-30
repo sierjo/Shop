@@ -6,6 +6,7 @@ import com.diplom_proj.shop.entity.OrderItems;
 import com.diplom_proj.shop.entity.Orders;
 import com.diplom_proj.shop.repository.OrderItemRepository;
 import com.diplom_proj.shop.repository.OrderRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,8 +31,9 @@ public class WarehouseService {
         List<AssemblingOrdersDTO> dtoList = new ArrayList<>();
 
         for (Orders item : allOrders) {
-            // Если ордер помечен как выполненный он не добавляется в список
-            if (item.getOrderStatus().equals("DONE")) continue;
+            // Если ордер помечен как "Order completed" || "In Progress" он не добавляется в список
+            if ((item.getOrderStatus().equals("Order completed")) || (item.getOrderStatus().equals("In Progress")))
+                continue;
             else {
                 AssemblingOrdersDTO dto = new AssemblingOrdersDTO();
 
@@ -45,6 +47,43 @@ public class WarehouseService {
             }
         }
         return dtoList;
+    }
+
+    @Transactional
+    public void takeOrderInWork(Integer orderId) {
+        Orders order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order was not found"));
+        order.setOrderStatus("In Progress");
+        orderRepository.save(order);
+    }
+
+    public List<AssemblingOrdersDTO> getOrdersInWork() {
+        //  все заказы со статусом "In Progress"
+        List<Orders> activeOrders = orderRepository.findByOrderStatus("In Progress");
+
+        // пустой список для DTO
+        List<AssemblingOrdersDTO> dtoList = new ArrayList<>();
+
+        for (Orders item : activeOrders) {
+            AssemblingOrdersDTO dto = new AssemblingOrdersDTO();
+
+            dto.setOrderId(item.getOrderId());
+            dto.setCity(item.getCity());
+
+            Integer totalItems = orderItemRepository.getSumOfOrdersItemsInOrder(item.getOrderId());
+            dto.setSumQuantityesProducts(totalItems);
+
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
+
+    @Transactional
+    public void closeOrderInLeftPanel(Integer orderId) {
+        Orders order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order was not found"));
+        order.setOrderStatus("CREATED");
+        orderRepository.save(order);
     }
 
     public List<ModalWindowDTO> getItemsForModalPanel(int orderId) {

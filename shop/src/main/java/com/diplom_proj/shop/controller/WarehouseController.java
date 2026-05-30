@@ -33,9 +33,31 @@ public class WarehouseController {
     public String Collection(Model model) {
         List<AssemblingOrdersDTO> allAssemblingOrders = warehouseService.getAllOrders();
         UsersDTO user = usersService.dtouser();
+        List<AssemblingOrdersDTO> activeOrders = warehouseService.getOrdersInWork();
         model.addAttribute("currentUser", user);
         model.addAttribute("order", allAssemblingOrders);
+        model.addAttribute("activeOrders", activeOrders); // Заказы в работе
         return "assemblingOrders";
+    }
+
+    @PostMapping("/order/take")
+    public ResponseEntity<Void> TakeOrder(@RequestParam("itemId") Integer orderId) {
+        try {
+            warehouseService.takeOrderInWork(orderId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/order/close")
+    public ResponseEntity<Void> CloseOrderInLeftPanel(@RequestParam("itemId") Integer orderId) {
+        try {
+            warehouseService.closeOrderInLeftPanel(orderId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping("/order/modalPanel")

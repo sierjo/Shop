@@ -12,16 +12,28 @@
 </head>
 <body>
 <aside class="sidebar">
-    <h2>Мои заказы в работе</h2>
-    <div id="active-orders-list">
+    <h2>Orders in progress</h2>
+    <div>
+        <div id="active-orders-list">
+            <div th:each="activeOrd : ${activeOrders}" class="order-card" th:id="'order-' + ${activeOrd.orderId}">
+                <div class="order-info">
+                <span class="leftPanel-close-order"
+                      th:onclick="'closeLeftPanelOrder(event, this, ' + ${activeOrd.orderId} + ')'">✖</span>
+                    <p><strong>City:</strong> <span th:text="${activeOrd.city}"></span></p>
+                    <p><strong>Orfer №:</strong> <span th:text="${activeOrd.orderId}"></span></p>
+                    <p>Quantity: <span th:text="${activeOrd.sumQuantityesProducts}"></span></p>
+                </div>
+            </div>
+        </div>
     </div>
+
 </aside>
 <main class="main-content">
     <header class="main-header">
         <div class="header-container">
             <div class="header-logo">
                 <span>
-                        Доступные заказы по городам
+                       Available orders by city
                 </span>
             </div>
 
@@ -51,12 +63,12 @@
 
         <div th:each="ord : ${order}" class="order-card" th:id="'order-' + ${ord.orderId}">
             <div class="order-info">
-                <p><strong>Город:</strong> <span th:text="${ord.city}"></span></p>
-                <p><strong>Заказ №:</strong> <span th:text="${ord.orderId}"></span></p>
-                <p>Кол-во товаров: <span th:text="${ord.sumQuantityesProducts}"></span></p>
+                <p><strong>City:</strong> <span th:text="${ord.city}"></span></p>
+                <p><strong>Order №:</strong> <span th:text="${ord.orderId}"></span></p>
+                <p>Quantity: <span th:text="${ord.sumQuantityesProducts}"></span></p>
             </div>
             <button class="btn-take" th:onclick="'takeOrder(this, ' + ${ord.orderId} + ')'">
-                Взять заказ
+                Take Order
             </button>
         </div>
     </div>
@@ -88,8 +100,6 @@
         </div>
     </div>
 </div>
-
-
 
 
 <!--CHAT          ↓↓↓↓↓↓-->

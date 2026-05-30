@@ -1,18 +1,102 @@
-
 // Токен
 const csrfToken = document.querySelector('meta[name="_csrf"]').content;
 const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
 function takeOrder(buttonElement, orderId) {
-    // Определение по какой карточке кликнули
-    let orderCard = document.getElementById('order-' + orderId);
+    let formData = new URLSearchParams();
+    formData.append('itemId', orderId);
+    fetch('/order/take', {
+        method: 'POST',
+        headers: {
+            [csrfHeader]: csrfToken// Передача токена на сервер!
+        },
+        body: formData
+    })
+        .then(response => {
+                if (response.ok) {
+                    // Определение по какой карточке кликнули
+                    let orderCard = document.getElementById('order-' + orderId);
 
-    // Получение Id левого меню
-    let sidebarList = document.getElementById('active-orders-list');
+                    // Получение Id левого меню
+                    let sidebarList = document.getElementById('active-orders-list');
 
-    // Перемещение карточки в левое менюи и удаление с центра
-    sidebarList.appendChild(orderCard);
+                    // Крестик для левой карточки
+                    let closeBtn = document.createElement('span');
+                    closeBtn.className = 'leftPanel-close-order'; // Применяем наш новый класс
+                    closeBtn.innerText = '✖';
+                    closeBtn.onclick = function (e) {
+                        closeLeftPanelOrder(e, this, orderId);
+                    };
+
+                    // Вставка созданного крестика
+                    orderCard.appendChild(closeBtn);
+                    // Перемещение карточки в левое менюи и удаление с центра
+                    sidebarList.appendChild(orderCard);
+
+                } else {
+                    alert("Error: Couldn't take the order to work.");
+                }
+            }
+        )
+        .catch(error => {
+            console.error("Network error:", error);
+        });
 }
 
+function closeLeftPanelOrder(event, buttonElement, orderId) {
+
+    /* Из-за того что крестик нахлдится в области которая сама по себе является триггером сабытия по нажатию
+    * что-бы небыло каскадного вызова событий исспользуется этот эвет */
+    event.stopPropagation();
+
+
+    let formData = new URLSearchParams();
+    formData.append('itemId', orderId);
+
+    // Отправляем запрос на сервер
+    fetch('/order/close', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            [csrfHeader]: csrfToken // Не забываем про токен безопасности!
+        },
+        body: formData
+    })
+        .then(response => {
+            if (response.ok) {
+                // Карточка крестик которой был нажат
+                let orderCard = document.getElementById('order-' + orderId);
+
+                let availableList = document.getElementById('available-orders-list');
+
+                // карточка перемещается обратно
+                availableList.appendChild(orderCard);
+
+                // Крестик скрыывается
+                buttonElement.style.display = 'none';
+
+                // Добавление кнопки "Tace Order"
+                let takeBtn = orderCard.querySelector('.btn-take');
+                if (takeBtn) {
+                    takeBtn.style.display = 'inline-block';
+                } else {
+                    takeBtn = document.createElement('button');
+                    takeBtn.className = 'btn-take';
+                    takeBtn.innerText = 'Tace Order';
+                    takeBtn.onclick = function () {
+                        takeOrder(this, orderId);
+                    };
+                    orderCard.appendChild(takeBtn);
+                }
+
+            } else {
+                alert("Ошибка при закрытии заказа. Попробуйте обновить страницу.");
+            }
+        })
+        .catch(error => {
+            console.error("Ошибка сети:", error);
+        });
+}
 
 // Отслеживание кликов по левой панели
 document.getElementById('active-orders-list').addEventListener('click', function (event) {
@@ -149,6 +233,7 @@ function completeOrder() {
 
 // Перетаскивание окна
 dragElement(document.getElementById("orderModal"));
+
 function dragElement(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     var header = document.getElementById("modalHeader");
@@ -274,6 +359,7 @@ function showMessage(sender, content) {
 
 // Перетаскивание Чата
 dragChat(document.getElementById("chatModal"));
+
 function dragChat(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     var header = elmnt.querySelector('.modal-header');
@@ -312,4 +398,5 @@ function dragChat(elmnt) {
         document.onmousemove = null;
     }
 }
+
 // CHAT             ↑↑↑↑↑
