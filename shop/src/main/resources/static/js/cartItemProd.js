@@ -1,3 +1,7 @@
+// Токен
+const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
 function deleteCartProduct(productId) {
     // 1. (Опционально) Спрашиваем пользователя, точно ли он хочет удалить
     if (!confirm(`Удалить этот товар ${productId} из корзины?`)) {
@@ -7,7 +11,11 @@ function deleteCartProduct(productId) {
     // 2. Отправляем запрос на ваш контроллер
     // Замените URL на тот, который удаляет товар в вашем Spring контроллере
     fetch('/cartProduct/delete?productId=' + productId, {
-        method: 'POST' // Или 'DELETE', если ваш контроллер настроен на @DeleteMapping
+        method: 'POST', // Или 'DELETE', если ваш контроллер настроен на @DeleteMapping
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            [csrfHeader]: csrfToken// Передача токена на сервер!
+        },
     })
         .then(response => {
             if (response.ok) {
@@ -49,6 +57,7 @@ function updateQuantity(productId, quantity, productPrice) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
+            [csrfHeader]: csrfToken// Передача токена на сервер!
         },
         body: formData
     })

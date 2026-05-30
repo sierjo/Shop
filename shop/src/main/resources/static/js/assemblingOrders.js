@@ -1,3 +1,7 @@
+
+// Токен
+const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 function takeOrder(buttonElement, orderId) {
     // Определение по какой карточке кликнули
     let orderCard = document.getElementById('order-' + orderId);
@@ -47,7 +51,7 @@ function openModal(orderId, city) {
     fetch('/order/modalPanel', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            [csrfHeader]: csrfToken// Передача токена на сервер!
         },
         body: formData
     })
@@ -127,7 +131,7 @@ function completeOrder() {
     fetch('/order/assembling/complete', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            [csrfHeader]: csrfToken// Передача токена на сервер!
         },
         body: orderComplete
     })

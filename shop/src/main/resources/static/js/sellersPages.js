@@ -1,3 +1,7 @@
+// Токен
+const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
 function startSearch() {
     let inputField = document.getElementById("searchInput");
     let findValue = inputField.value.trim();
@@ -20,7 +24,7 @@ function startSearch() {
     fetch('/seller/search', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            [csrfHeader]: csrfToken// Передача токена на сервер!
         },
         body: formData
     })
@@ -87,7 +91,7 @@ function informationDetails(orderId) {
     fetch('/seller/order/details', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            [csrfHeader]: csrfToken// Передача токена на сервер!
         },
         body: formData
     })
@@ -133,7 +137,7 @@ function giveOrder() {
     fetch('/seller/clientPicksUp', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            [csrfHeader]: csrfToken// Передача токена на сервер!
         },
         body: formData
     })
@@ -155,7 +159,7 @@ function returnOrder() {
     fetch('/seller/clientRefund', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            [csrfHeader]: csrfToken// Передача токена на сервер!
         },
         body: formData
     })
@@ -307,6 +311,7 @@ function showMessage(sender, content) {
 
 // Перетаскивание Чата
 dragChat(document.getElementById("chatModal"));
+
 function dragChat(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     var header = elmnt.querySelector('.modal-header');
@@ -345,4 +350,5 @@ function dragChat(elmnt) {
         document.onmousemove = null;
     }
 }
+
 // CHAT             ↑↑↑↑↑

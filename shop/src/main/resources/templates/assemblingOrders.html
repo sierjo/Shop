@@ -6,6 +6,9 @@
     <title>Сборка заказов</title>
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/ForWarehousePages.css}"/>
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/ChatCSS.css}"/>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 <aside class="sidebar">
@@ -37,7 +40,9 @@
                         </a>
                         <span th:text="${currentUser.email}" class="user-email"></span>
                     </div>
-                    <a th:href="@{/logout}" class="btn-logout">Выйти</a>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="btn-logout">Выйти</button>
+                    </form>
                 </div>
             </div>
         </div>

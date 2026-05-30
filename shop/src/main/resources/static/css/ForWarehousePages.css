@@ -62,13 +62,13 @@ body {
 }
 
 /* Кнопки в шапке */
-/*.btn-login, .btn-logout {*/
-.btn-logout {
+.btn-login, .btn-logout {
     text-decoration: none;
     padding: 6px 16px;
     border-radius: 20px;
     font-weight: bold;
     font-size: 14px;
+    cursor: pointer;
 }
 
 /* Кнопка Войти */

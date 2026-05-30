@@ -65,8 +65,8 @@ public class WebSecurityConfig {
                     logout.logoutUrl("/logout");
                     logout.logoutSuccessUrl("/strona");
                 }).cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable());
-//                .csrf(Customizer.withDefaults());
+//                .csrf(csrf -> csrf.disable());
+                .csrf(Customizer.withDefaults());
 
         return http.build();
     }

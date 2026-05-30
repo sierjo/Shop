@@ -62,19 +62,6 @@ body {
     color: green;
 }
 
-.loginBox{
-    display: inline-block;
-    margin-left: 15px;
-}
-
-.loginName{
-    font-weight: bold;
-    margin-right: 10px;
-}
-.userLogout{
-    color: red
-}
-
 /* Changing the icon color to red when hovering over him*/
 .my-custom-icon {
     fill: black;
@@ -110,4 +97,26 @@ body {
 
 .add-to-favorite{
     text-align: right;
+}
+
+
+/* Кнопки в шапке */
+.btn-logout {
+    text-decoration: none;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* Кнопка Выйти */
+.btn-logout {
+    color: #d32f2f;
+    border: 1px solid #d32f2f;
+}
+
+.btn-logout:hover {
+    background-color: #d32f2f;
+    color: white;
 }

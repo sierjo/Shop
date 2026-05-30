@@ -1,6 +1,12 @@
+// Токен
+const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 document.addEventListener("DOMContentLoaded", function () {
     fetch('/products/favoriteProduct/exist', {
-        method: 'GET'
+        method: 'GET',
+        headers: {
+            [csrfHeader]: csrfToken// Передача токена на сервер!
+        },
     })
         .then(response => {
             if (response.ok) {
@@ -31,7 +37,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Отправка в метод контроллера `updateProductParameters`
     fetch('/strona/favorites/favoriteProduct', {
         method: 'POST',
-
+        headers: {
+            [csrfHeader]: csrfToken// Передача токена на сервер!
+        },
         body: params // Передача коллекции данных на контроллер
     })
         .then(response => {
@@ -171,7 +179,10 @@ function deleteFavoriteProduct(productId) {
     // 2. Отправляем запрос на ваш контроллер
     // Замените URL на тот, который удаляет товар в вашем Spring контроллере
     fetch('/strona/favorites/delete?productId=' + productId, {
-        method: 'POST' // Или 'DELETE', если ваш контроллер настроен на @DeleteMapping
+        method: 'POST', // Или 'DELETE', если ваш контроллер настроен на @DeleteMapping
+        headers: {
+            [csrfHeader]: csrfToken// Передача токена на сервер!
+        },
     })
         .then(response => {
             if (response.ok) {
