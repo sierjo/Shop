@@ -36,14 +36,19 @@ public class StronaController {
     }
 
     @GetMapping("/strona")
-    public String shopPage(Model model) {
-        // Get list Products
-        List<Products> allProducts = productsService.getAll();
+    public String shopPage(Model model, @RequestParam(value = "keyword", required = false) String keyword) {
+
+        List<Products> products = productsService.getAllOrFindProducts(keyword);
         UsersDTO user = usersService.dtouser();
+
         // Put this list to model by name "products"
         model.addAttribute("currentUser", user);
-        model.addAttribute("products", allProducts);
-//        model.addAttribute("favoriteProduct", new FavoriteProducts());
+        model.addAttribute("products", products);
+
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            model.addAttribute("keyword", keyword);
+        }
         return "strona";
     }
 

@@ -40,14 +40,17 @@
             <div class="auth-section">
                 <div sec:authorize="isAuthenticated()" class="user-profile">
                     <div class="user-info">
+                        <a href="/strona">← Do strony głównej</a>
                         <button class="btn-chat" th:onclick="'startChat(\'' + ${currentUser.id} + '\')'">Chat</button>
                         <a th:href="@{/order/assembling}" class="profile-link">
-                            <svg class="my-custom-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                            <svg class="my-custom-icon" viewBox="0 0 32 32"
+                                 xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16 16C11.3812 16 8.4944 11 10.8038 7C13.1132 3 18.8868 3 21.1962 7C21.72287.9121 22 8.9468
                             22 10C21.9967 13.3123 19.3123 15.9967 16 16ZM16 6C12.9208 6 10.9963 9.3333 12.5359 12C14.0755 14.6667
                             17.9245 14.6667 19.4641 12C19.8152 11.3919 20 10.7021 20 10C20 7.7909 18.2091 6 16 6ZM28 28C20 28 12 28 4 28C4
                             27.6667 4 27.3333 4 27C4 21.7 8.935 18 16 18C23.065 18 28 21.7 28 27C28 27.3333 28 27.6667 28 28ZM6.084 26C12.6947
-                            26 19.3053 26 25.916 26C25.305 22.42 21.4 20 16 20C10.6 20 6.7 22.42 6.084 26Z"/>
+                            26 19.3053 26 25.916 26C25.305 22.42 21.4 20 16 20C10.6 20 6.7 22.42 6.084 26Z"
+                                />
                             </svg>
                         </a>
                         <span th:text="${currentUser.email}" class="user-email"></span>

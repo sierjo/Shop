@@ -95,10 +95,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 let heartIcon = document.getElementById('fevor-add' + id);
                 if (heartIcon) {
                     heartIcon.outerHTML = `
-                    <svg id="fevor-added${id}" xmlns="http://www.w3.org/2000/svg" width="17" height="12" viewBox="0 0 32.00 32.00"
-                             data-guides="{&quot;vertical&quot;:[],&quot;horizontal&quot;:[]}">
-                            <defs/>
-                            <path fill="#ee0b0b" stroke="none" fill-opacity="1" stroke-width="1" stroke-opacity="1"
+                    <svg id="fevor-added${id}" width="24" height="24" viewBox="0 0 32.00 32.00"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <defs/>
+                        <path fill="#ee0b0b" stroke="none" fill-opacity="1" stroke-width="1" stroke-opacity="1"
                                   id="tSvgbe7afa32cf" title="Path 11"
                                   d="M21.1402 7.4C23.883 7.4655 26.0561 9.337 26.0002 12.08C26.0002 17.6658 21.2868 21.6106 18.0253 24.1499C17.6559 24.4375 16.5949 25.2053 16 25C15.3522 24.7765 15.1734 23.5621 15.0242 23.0548C14.2025 20.2619 13.7186 17.1581 15.5002 13C17.5846 8.1352 19.7412 7.4115 21.1402 7.4ZM21.1402 5C19.1576 5.0063 17.278 5.8839 16.0002 7.4C14.7225 5.8839 12.8429 5.0063 10.8602 5C7.0106 5.0603 3.939 8.2304 4.0002 12.08C4.0002 20.92 16.0002 28 16.0002 28C16.0002 28 28.0002 20.92 28.0002 12.08C28.0615 8.2304 23.0376 5.0297 21.1402 5Z"/>
                         </svg>`;
@@ -129,8 +129,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 let heartIcon = document.getElementById('cart-add' + id);
                 if (heartIcon) {
                     heartIcon.outerHTML = `
-                    <svg id="cart-added${id}" xmlns="http://www.w3.org/2000/svg" width="17" height="12" viewBox="0 0 32.00 32.00" 
-                         data-guides="{&quot;vertical&quot;:[],&quot;horizontal&quot;:[]}">
+                    <svg id="cart-added${id}" width="30" height="29" viewBox="0 0 26.00 25.00"
+                        xmlns="http://www.w3.org/2000/svg"> 
                         <defs/>
                         <path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1" stroke-opacity="1"
                               id="tSvg18a1ca1f33d" title="Path 3"
@@ -164,8 +164,8 @@ function addTOFavorite(productId) {
             if (response.ok) {
                 let oldIcon = document.getElementById('fevor-add' + productId)
                 oldIcon.outerHTML = `
-                <svg id="fevor-added${productId}" xmlns="http://www.w3.org/2000/svg" width="17" height="12" viewBox="0 0 32.00 32.00"
-                     data-guides="{&quot;vertical&quot;:[],&quot;horizontal&quot;:[]}">
+                <svg id="fevor-added${productId}" width="24" height="24" viewBox="0 0 32.00 32.00"
+                    xmlns="http://www.w3.org/2000/svg">
                     <defs/>
                     <path fill="#ee0b0b" stroke="none" fill-opacity="1" stroke-width="1" stroke-opacity="1"
                           id="tSvgbe7afa32cf" title="Path 11"
@@ -181,8 +181,8 @@ function addTOFavorite(productId) {
                 let newIcon = document.getElementById('fevor-added' + productId)
                 if (oldIcon)
                     oldIcon.outerHTML = `
-                        <svg id="fevor-added${productId}" xmlns="http://www.w3.org/2000/svg" width="17" height="12" viewBox="0 0 32.00 32.00"
-                             data-guides="{&quot;vertical&quot;:[],&quot;horizontal&quot;:[]}">
+                        <svg id="fevor-added${productId}" width="24" height="24" viewBox="0 0 32.00 32.00"
+                            xmlns="http://www.w3.org/2000/svg">
                             <defs/>
                             <path fill="#ee0b0b" stroke="none" fill-opacity="1" stroke-width="1" stroke-opacity="1"
                                   id="tSvgbe7afa32cf" title="Path 11"
@@ -190,13 +190,12 @@ function addTOFavorite(productId) {
                         </svg>`;
                 else if (newIcon)
                     newIcon.outerHTML = `
-                    <svg id="fevor-add${productId}" class="my-custom-icon" xmlns="http://www.w3.org/2000/svg"
-                                     width="17" height="12"
-                                     viewBox="0 0 26.00 25.00" fill="#492f2f"
-                                     data-guides="{&quot;vertical&quot;:[],&quot;horizontal&quot;:[]}">
-                                    <defs/>
-                                    <path d="M18.14 2.5C20.8827 2.5655 23.5559 5.337 23.5 8.08C23.5 14.28 15.73 20.66 13 22.5C10.27 20.65 2.5 14.27 2.5 8.08C2.4441 5.337 5.1173 2.5655 7.86 2.5C9.2574 2.509 10.6006 2.9304 11.5 4C12.0067 4.6 12.4933 5.4 13 6C13.5067 5.4033 13.9933 4.5967 14.5 4C15.3975 2.9267 16.7409 2.5115 18.14 2.5ZM18.14 1C16.1573 1.0063 14.2777 1.8839 13 3.4C11.7223 1.8839 9.8427 1.0063 7.86 1C4.0104 1.0603 0.9388 4.2304 1 8.08C1 16.92 13 24 13 24C13 24 25 16.92 25 8.08C25.0612 4.2304 21.9896 1.0603 18.14 1Z"/>
-                                </svg>`;
+                    <svg id="fevor-add${productId}" class="my-custom-icon" width="24" height="24" viewBox="0 0 32.00 32.00"
+                         xmlns="http://www.w3.org/2000/svg">
+                         <defs/>
+                         <path fill="rgb(101, 101, 101)" stroke="none" fill-opacity="1" stroke-width="1" stroke-opacity="1" id="tSvg8feeb7b167" title="Path 2" d="M21.14 7C23.8827 7.0655 26.0559 9.337 26 12.08C26 18.28 18.73 23.78 16 25.62C13.27 23.77 6 18.27 6 12.08C5.9441 9.337 8.1173 7.0655 10.86 7C12.2574 7.009 13.5806 7.6304 14.48 8.7C14.9867 9.3 15.4933 9.9 16 10.5C16.5067 9.9033 17.0133 9.3067 17.52 8.71C18.4175 7.6367 19.7409 7.0115 21.14 7ZM21.14 5C19.1573 5.0063 17.2777 5.8839 16 7.4C14.7223 5.8839 12.8427 5.0063 10.86 5C7.0104 5.0603 3.9388 8.2304 4 12.08C4 20.92 16 28 16 28C16 28 28 20.92 28 12.08C28.0612 8.2304 24.9896 5.0603 21.14 5Z"/>
+                    </svg>
+                    `;
             } else {
                 // Любая другая непредвиденная ошибка (403, 500 и т.д.)
                 alert("Something wrong: " + response.status);
@@ -226,9 +225,9 @@ function addTOCart(productId) {
         .then(response => {
             if (response.ok) {
                 let oldIcon = document.getElementById('cart-add' + productId)
-                oldIcon.outerHTML = `
-                    <svg id="cart-added${productId}" xmlns="http://www.w3.org/2000/svg" width="17" height="12" viewBox="0 0 32.00 32.00"
-                    data-guides="{&quot;vertical&quot;:[],&quot;horizontal&quot;:[]}">
+                oldIcon.outerHTML = `                                                                             <!-- "0 0 32.00 32.00" -->
+                    <svg id="cart-added${productId}" width="30" height="29" viewBox="0 0 26.00 25.00"
+                    xmlns="http://www.w3.org/2000/svg">
                     <defs/>
                     <path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1" stroke-opacity="1"
                     id="tSvg18a1ca1f33d" title="Path 3"
@@ -240,8 +239,8 @@ function addTOCart(productId) {
                 let newIcon = document.getElementById('cart-added' + productId)
                 if (oldIcon)
                     oldIcon.outerHTML = `
-                        <svg id="cart-added${productId}" xmlns="http://www.w3.org/2000/svg" width="17" height="12"
-                        viewBox="0 0 26.00 25.00" data-guides="{&quot;vertical&quot;:[],&quot;horizontal&quot;:[]}">
+                        <svg id="cart-added${productId}" width="30" height="29" viewBox="0 0 26.00 25.00"
+                        xmlns="http://www.w3.org/2000/svg">
                         <defs/>
                         <path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1" stroke-opacity="1"
                         id="tSvg18a1ca1f33d" title="Path 3"
@@ -249,8 +248,8 @@ function addTOCart(productId) {
                         </svg>`;
                 else if (newIcon)
                     newIcon.outerHTML = `
-                    <svg id="cart-add${productId}" class="my-custom-cart-icon" xmlns="http://www.w3.org/2000/svg" width="17" height="12"
-                                     viewBox="0 0 26.00 25.00" fill="#492f2f" data-guides="{&quot;vertical&quot;:[],&quot;horizontal&quot;:[]}">
+                    <svg id="cart-add${productId}" class="my-custom-cart-icon" width="30" height="29" viewBox="0 0 26.00 25.00" 
+                                     xmlns="http://www.w3.org/2000/svg" fill="#492f2f">
                                     <defs/>
                                     <path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1" stroke-opacity="1" id="tSvg176b0a2b0fe" title="Path 3" d="M4 5L6.5 5.5C6.5 5.5 6.5 5.5 6.5 5.5L8.9213 16.1537C8.9722 16.3776 8.9439 16.6123 8.8412 16.8177L8.222 18.056C8.0822 18.3355 8.0822 18.6645 8.222 18.944L8.25 19C8.4032 19.3064 8.7164 19.5 9.059 19.5H22.5" pointer-events="none"/>
                                     <path fill="transparent" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" id="tSvg84930e6073" title="Ellipse 1" d="M21 20.868C21.5523 20.868 22 21.3052 22 21.8445C22 22.3838 21.5523 22.821 21 22.821C20.4477 22.821 20 22.3838 20 21.8445C20 21.3052 20.4477 20.868 21 20.868Z" pointer-events="none" style="transform-origin: 21px 21.84px;"/>
