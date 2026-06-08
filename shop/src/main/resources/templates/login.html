@@ -2,44 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/YourShop.css}"/>
     <title>Login</title>
 </head>
 <body>
-<form th:action="@{/login}" th:object="${user}" method="post">
-    <h1>Login</h1>
-    <div class="#">
-        <input
-                name="username"
-                placeholder="Email"
-                type="email"
-                class="#"
-                required/>
-    </div>
-    <div class="#">
-        <input
-                name="password"
-                placeholder="Password"
-                type="password"
-                class="#"
-                required/>
-    </div>
-    <div class="#">
-        <label class="#"
-        ><input type="checkbox"/> Remember me</label>
-        <a href="#" class="#">Forgot Password?</a>
-    </div>
-    <div class="#">
-        <button type="submit" class="#">Log in</button>
-    </div>
+<div class="auth-wrapper">
+    <div class="form-box">
+        <h1>Logowanie</h1>
 
-    <p class="#">
-        Are you a new User?
-        <a
-                class="#"
-                href="#"
-                th:href="@{/register}">
-            Register Now</a>
-    </p>
-</form>
+        <form th:action="@{/login}" th:object="${user}" method="post">
+
+            <div class="form-group">
+                <input name="username" placeholder="Email" type="email" class="form-control" required/>
+            </div>
+
+            <div class="form-group">
+                <input name="password" placeholder="Hasło" type="password" class="form-control" required/>
+            </div>
+
+            <div class="form-links">
+                <label><input type="checkbox"/> Zapamiętaj mnie</label>
+                <a href="#">Zapomniałeś hasła?</a>
+            </div>
+
+            <button type="submit" class="btn-block">Zaloguj się</button>
+
+            <div class="form-footer-text">
+                Jesteś nowym użytkownikiem?
+                <a th:href="@{/register}">Zarejestruj się</a>
+            </div>
+
+        </form>
+    </div>
+</div>
 </body>
 </html>

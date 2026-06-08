@@ -25,7 +25,7 @@ public interface SellersRepository extends JpaRepository<Orders, Integer> {
             "o.city, " +
             "CAST(o.orderDate AS string), " +
             "o.totalAmount) " +
-            "FROM Orders o WHERE o.orderStatus = 'Order completed' " +
+            "FROM Orders o WHERE o.orderStatus = 'ORDER_COMPLETED' " +
             "AND UPPER(CONCAT(o.address.name, ' ', o.address.surname)) LIKE UPPER(CONCAT('%', :findValue, '%'))")
     List<DeliveryOrdersDTO> searchOrdersByName(@Param("findValue") String findValue);
 

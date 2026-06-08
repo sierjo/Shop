@@ -82,7 +82,7 @@ function closeLeftPanelOrder(event, buttonElement, orderId) {
                 } else {
                     takeBtn = document.createElement('button');
                     takeBtn.className = 'btn-take';
-                    takeBtn.innerText = 'Tace Order';
+                    takeBtn.innerText = 'Do pracy';
                     takeBtn.onclick = function () {
                         takeOrder(this, orderId);
                     };
@@ -104,7 +104,7 @@ document.getElementById('active-orders-list').addEventListener('click', function
     let orderCard = event.target.closest('.order-card');
 
     // Если клик действительно был по карточке (а не по пустому фону панели)
-    if (orderCard) {
+    if (orderCard && !event.target.classList.contains('leftPanel-close-order')) {
         // ID заказа
         let orderId = orderCard.id.replace('order-', '');
         // Город для заголовка окна

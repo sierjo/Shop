@@ -14,7 +14,7 @@
 <body class="cart-page">
 <div class="layout-container">
     <header class="header">
-        <h2>Your shopping cart</h2>
+        <h2>Twój koszyk</h2>
         <nav class="main-menu">
             <a href="/products/favoriteProduct" class="icons" sec:authorize="hasAnyAuthority('Klient')">
                 <svg class="my-custom-icon" width="30" height="29" viewBox="0 0 26.00 25.00"
@@ -50,7 +50,7 @@
                 </svg>
             </a>
             <form th:action="@{/logout}" method="post">
-                <button type="submit" class="btn-logout">Выйти</button>
+                <button type="submit" class="btn-logout">Wyloguj</button>
             </form>
         </nav>
     </header>

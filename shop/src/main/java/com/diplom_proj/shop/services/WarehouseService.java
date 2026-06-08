@@ -32,7 +32,7 @@ public class WarehouseService {
 
         for (Orders item : allOrders) {
             // Если ордер помечен как "Order completed" || "In Progress" он не добавляется в список
-            if ((item.getOrderStatus().equals("Order completed")) || (item.getOrderStatus().equals("In Progress")))
+            if ((item.getOrderStatus().equals("ORDER_COMPLETED")) || (item.getOrderStatus().equals("IN_PROGRESS")))
                 continue;
             else {
                 AssemblingOrdersDTO dto = new AssemblingOrdersDTO();
@@ -53,13 +53,13 @@ public class WarehouseService {
     public void takeOrderInWork(Integer orderId) {
         Orders order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order was not found"));
-        order.setOrderStatus("In Progress");
+        order.setOrderStatus("IN_PROGRESS");
         orderRepository.save(order);
     }
 
     public List<AssemblingOrdersDTO> getOrdersInWork() {
         //  все заказы со статусом "In Progress"
-        List<Orders> activeOrders = orderRepository.findByOrderStatus("In Progress");
+        List<Orders> activeOrders = orderRepository.findByOrderStatus("IN_PROGRESS");
 
         // пустой список для DTO
         List<AssemblingOrdersDTO> dtoList = new ArrayList<>();

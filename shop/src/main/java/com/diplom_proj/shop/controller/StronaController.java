@@ -2,7 +2,6 @@ package com.diplom_proj.shop.controller;
 
 import com.diplom_proj.shop.dto.UsersDTO;
 import com.diplom_proj.shop.entity.Products;
-import com.diplom_proj.shop.repository.ProductsRepository;
 import com.diplom_proj.shop.services.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,15 +22,13 @@ public class StronaController {
     private final UsersService usersService;
     private final CartItemsServices cartItemsServices;
     private final CartServices cartServices;
-    private final ProductsRepository productsRepository;
     private final FavoriteProductsServices favoriteProductsServices;
 
-    public StronaController(ProductsService productsService, UsersService usersService, CartItemsServices cartItemsServices, CartServices cartServices, ProductsRepository productsRepository, FavoriteProductsServices favoriteProductsServices) {
+    public StronaController(ProductsService productsService, UsersService usersService, CartItemsServices cartItemsServices, CartServices cartServices, FavoriteProductsServices favoriteProductsServices) {
         this.productsService = productsService;
         this.usersService = usersService;
         this.cartItemsServices = cartItemsServices;
         this.cartServices = cartServices;
-        this.productsRepository = productsRepository;
         this.favoriteProductsServices = favoriteProductsServices;
     }
 
@@ -49,7 +46,7 @@ public class StronaController {
         if (keyword != null && !keyword.trim().isEmpty()) {
             model.addAttribute("keyword", keyword);
         }
-        return "strona";
+        return "mainPage";
     }
 
     @PostMapping("/products/update-product")
@@ -69,7 +66,7 @@ public class StronaController {
     @ResponseBody
     public ResponseEntity<?> favoriteProduct(@RequestParam Integer productId) {
 
-        Optional<Products> optionalProduct = productsRepository.findById(productId);
+        Optional<Products> optionalProduct = productsService.getProduct(productId);
 
         if (optionalProduct.isPresent()) {
 

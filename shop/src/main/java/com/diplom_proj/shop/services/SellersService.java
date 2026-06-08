@@ -34,14 +34,14 @@ private final OrderRepository orderRepository;
 
     public boolean getPickUpStatus(int id){
         Orders newStatus = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("The orders doesn't find"));
-        newStatus.setOrderStatus("PickUp");
+        newStatus.setOrderStatus("PICK_UP");
         orderRepository.save(newStatus);
         return true;
 
     }
     public boolean getRefundStatus(int id){
         Orders newStatus = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("The orders doesn't find"));
-        newStatus.setOrderStatus("Refund");
+        newStatus.setOrderStatus("REFUND");
         orderRepository.save(newStatus);
         return true;
 
