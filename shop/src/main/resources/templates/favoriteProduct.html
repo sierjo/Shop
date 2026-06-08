@@ -81,28 +81,59 @@
 
                     <div class="card-action-wrapper">
                         <h4 class="productPrice" th:text="${product.productPrice} + ' PLN'">Цена</h4>
-                        <div class="action-buttons-group">
-                            <div sec:authorize="hasAnyAuthority('Klient')">
-                                <div class="add-to-favorite" sec:authorize="hasAnyAuthority('Klient')">
-                                    <a href="javascript:void(0);" class="icons"
-                                       th:onclick="'deleteFavoriteProduct(' + ${product.productId} + ')'">
 
-                                        <svg th:id="'fevor-add' + ${product.productId}" class="my-custom-icon" width="24" height="24" viewBox="0 0 26.00 25.00"
-                                             xmlns="http://www.w3.org/2000/svg" fill="#492f2f">
-                                            <defs/>
-                                            <path d="M18.14 2.5C20.8827 2.5655 23.5559 5.337 23.5 8.08C23.5 14.28 15.73 20.66 13 22.5C10.27 20.65 2.5 14.27 2.5 8.08C2.4441 5.337 5.1173 2.5655 7.86 2.5C9.2574 2.509 10.6006 2.9304 11.5 4C12.0067 4.6 12.4933 5.4 13 6C13.5067 5.4033 13.9933 4.5967 14.5 4C15.3975 2.9267 16.7409 2.5115 18.14 2.5ZM18.14 1C16.1573 1.0063 14.2777 1.8839 13 3.4C11.7223 1.8839 9.8427 1.0063 7.86 1C4.0104 1.0603 0.9388 4.2304 1 8.08C1 16.92 13 24 13 24C13 24 25 16.92 25 8.08C25.0612 4.2304 21.9896 1.0603 18.14 1Z"/>
-                                        </svg>
-                                    </a>
-                                </div>
+                        <div class="action-buttons-group">
+
+                            <div class="add-to-favorite" sec:authorize="hasAnyAuthority('Klient')">
+                                <a href="javascript:void(0);" class="icons"
+                                   th:onclick="'deleteFavoriteProduct(' + ${product.productId} + ')'">
+
+                                    <svg th:id="'fevor-add' + ${product.productId}" class="my-custom-icon" width="24"
+                                         height="24" viewBox="0 0 26.00 25.00"
+                                         xmlns="http://www.w3.org/2000/svg" fill="#492f2f">
+                                        <defs/>
+                                        <path d="M18.14 2.5C20.8827 2.5655 23.5559 5.337 23.5 8.08C23.5 14.28 15.73 20.66 13 22.5C10.27 20.65 2.5 14.27 2.5 8.08C2.4441 5.337 5.1173 2.5655 7.86 2.5C9.2574 2.509 10.6006 2.9304 11.5 4C12.0067 4.6 12.4933 5.4 13 6C13.5067 5.4033 13.9933 4.5967 14.5 4C15.3975 2.9267 16.7409 2.5115 18.14 2.5ZM18.14 1C16.1573 1.0063 14.2777 1.8839 13 3.4C11.7223 1.8839 9.8427 1.0063 7.86 1C4.0104 1.0603 0.9388 4.2304 1 8.08C1 16.92 13 24 13 24C13 24 25 16.92 25 8.08C25.0612 4.2304 21.9896 1.0603 18.14 1Z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="add-to-cart">
+                                <a href="javascript:void(0);" class="icons"
+                                   th:onclick="'addTOCart(' + ${product.productId} + ')'">
+                                    <svg th:id="'cart-add' + ${product.productId}" class="my-custom-cart-icon"
+                                         width="30" height="29" viewBox="0 0 26.00 25.00"
+                                         xmlns="http://www.w3.org/2000/svg" fill="#492f2f">
+                                        <defs/>
+                                        <path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1"
+                                              stroke-opacity="1" id="tSvg176b0a2b0fe" title="Path 3"
+                                              d="M4 5L6.5 5.5C6.5 5.5 6.5 5.5 6.5 5.5L8.9213 16.1537C8.9722 16.3776 8.9439 16.6123 8.8412 16.8177L8.222 18.056C8.0822 18.3355 8.0822 18.6645 8.222 18.944L8.25 19C8.4032 19.3064 8.7164 19.5 9.059 19.5H22.5"
+                                              pointer-events="none"/>
+                                        <path fill="transparent" fill-opacity="1" stroke="#000000" stroke-opacity="1"
+                                              stroke-width="1" id="tSvg84930e6073" title="Ellipse 1"
+                                              d="M21 20.868C21.5523 20.868 22 21.3052 22 21.8445C22 22.3838 21.5523 22.821 21 22.821C20.4477 22.821 20 22.3838 20 21.8445C20 21.3052 20.4477 20.868 21 20.868Z"
+                                              pointer-events="none" style="transform-origin: 21px 21.84px;"/>
+                                        <path fill="transparent" fill-opacity="1" stroke="#000000" stroke-opacity="1"
+                                              stroke-width="1" id="tSvg9d51f881b0" title="Ellipse 2"
+                                              d="M10.9737 20.934C11.5115 20.934 11.9475 21.3416 11.9475 21.8445C11.9475 22.3473 11.5115 22.755 10.9737 22.755C10.436 22.755 10 22.3473 10 21.8445C10 21.3416 10.436 20.934 10.9737 20.934Z"
+                                              pointer-events="none" style="transform-origin: 10.97px 21.84px;"/>
+                                        <path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1"
+                                              stroke-opacity="1" id="tSvgb02df83168" title="Path 5"
+                                              d="M9.2688 8.024C8.881 8.0119 8.5873 8.3711 8.6762 8.7488L10.3843 16.0082C10.4509 16.2912 10.7138 16.4836 11.0038 16.4612L22.9532 15.5421C23.2727 15.5175 23.5322 15.2743 23.5776 14.9571L24.3984 9.2115C24.4526 8.832 24.1648 8.4895 23.7816 8.4775Z"
+                                              pointer-events="none"/>
+                                        <path fill="transparent" stroke="#000000" fill-opacity="1" stroke-width="1"
+                                              stroke-opacity="1" id="tSvg264dda6bb1" title="Path 6"
+                                              d="M12.5 16.5C12.5 16.5 12 8 12 8M15.5 16.5C15.5 16.5 15 8 15 8M18.5 16C18.5 16 18.5 8 18.5 8M21.5 16C21.5 16 22 8 22 8M9 11C9 11 24 11 24 11M9.5 14C9.5 14 24 13.5 24 13.5"
+                                              pointer-events="none"/>
+                                    </svg>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </article>
             </div>
         </section>
-
     </main>
 </div>
 <script th:src="@{/js/favoriteprod.js}"></script>
+<script th:src="@{/js/editProduct.js}"></script>
 </body>
 </html>
