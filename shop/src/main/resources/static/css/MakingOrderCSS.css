@@ -40,23 +40,6 @@ body {
     margin-bottom: 20px;
 }
 
-.saved-address-wrapper {
-    min-width: 280px;
-}
-
-.saved-address-wrapper label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.saved-address-wrapper select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
 #saveAddressCheckboxWrapper {
     margin-bottom: 10px;
 }
@@ -192,4 +175,77 @@ label[for="saveNewAddress"] {
 
 .total-price {
     font-size: 24px;
+}
+
+
+
+/* Кнопка переключения в режим удаления */
+.btn-toggle-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+}
+.btn-toggle-delete:hover {
+    transform: scale(1.15);
+}
+
+/* Шапка режима удаления */
+.delete-mode-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.delete-mode-title {
+    font-weight: bold;
+    color: #d32f2f;
+    font-size: 14px;
+}
+.btn-back-mode {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.2s;
+}
+.btn-back-mode:hover {
+    background-color: #e2e2e2;
+}
+
+/* Список адресов для удаления */
+.delete-address-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #efefef;
+    border-radius: 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    position: absolute;
+    z-index: 1;
+}
+
+.delete-address-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    border-bottom: 1px solid #efefef;
+    cursor: pointer;
+    background-color: #fff;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 14px;
+}
+.delete-address-item:last-child {
+    border-bottom: none;
+}
+.delete-address-item:hover {
+    background-color: #fee2e2;
+    color: #b71c1c;
 }

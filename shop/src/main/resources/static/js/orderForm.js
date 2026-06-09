@@ -181,3 +181,65 @@ function validateAndSubmitForm(event) {
         }
     }
 }
+
+
+// Переключение между режимом выбора и режимом удаления
+function toggleDeleteMode(showDelete) {
+    const selectWrapper = document.getElementById('select-mode-wrapper');
+    const deleteWrapper = document.getElementById('delete-mode-wrapper');
+
+    if (showDelete) {
+        selectWrapper.style.display = 'none';
+        deleteWrapper.style.display = 'block';
+    } else {
+        selectWrapper.style.display = 'block';
+        deleteWrapper.style.display = 'none';
+    }
+}
+
+// Обработка клика по адресу в списке удаления
+function confirmAddressDeletion(element) {
+    const addressId = element.getAttribute('data-id');
+    const addressText = element.getAttribute('data-text');
+    console.log(addressId);
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+    // Всплывающее окно подтверждения удаления
+    if (confirm("Czy na pewno chcesz usunąć ten adres?\n\n" + addressText)) {
+
+        // Создание объекта с параметрами
+        let params = new URLSearchParams();
+        params.append('id', addressId);
+        // Отправка запроса на сервер
+        fetch('/address/delete', {
+            method: 'POST',
+            headers: {
+                [csrfHeader]: csrfToken
+            },
+            body: params // Передача данных на контроллер
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Удаляет адрес из визуального списка удаления
+                    element.remove();
+
+                    // Удаляет этот же адрес из выпадающего <select>
+                    const optionToRemove = document.querySelector(`#selectedAddressId option[value="${addressId}"]`);
+                    if (optionToRemove) {
+                        optionToRemove.remove();
+                    }
+
+                    // Проверка, остались ли еще адреса. Если нет тогда выход из режима удаления
+                    const remainingItems = document.querySelectorAll('.delete-address-item');
+                    if (remainingItems.length === 0) {
+                        toggleDeleteMode(false);
+                        // убирает саму кнопку корзины
+                        document.querySelector('.btn-toggle-delete').style.display = 'none';
+                    }
+                } else {
+                    alert("Błąd podczas usuwania adresu. Spróbuj ponownie.");
+                }
+            })
+            .catch(error => console.error("Error deleting address:", error));
+    }
+}

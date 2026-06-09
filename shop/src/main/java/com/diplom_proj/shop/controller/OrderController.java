@@ -6,11 +6,10 @@ import com.diplom_proj.shop.entity.Address;
 import com.diplom_proj.shop.services.AddressServices;
 import com.diplom_proj.shop.services.CartItemsServices;
 import com.diplom_proj.shop.services.OrderServices;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,5 +44,16 @@ public class OrderController {
         orderServices.createOrder(orderRequestDTO);
         // Перенаправление обратно на страницу магазина
         return "redirect:/strona";
+    }
+
+    @PostMapping("/address/delete")
+    @ResponseBody
+    public ResponseEntity<?> deleteAddress(@RequestParam Integer id) {
+        boolean isDeleted = addressServices.deleteAddress(id);
+        if (isDeleted) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

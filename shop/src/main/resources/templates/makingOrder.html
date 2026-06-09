@@ -2,7 +2,9 @@
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Оформление заказа</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Formularz zamówienia</title>
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/MakingOrderCSS.css}"/>
 </head>
 <body>
@@ -10,7 +12,8 @@
 <main class="checkout-container">
     <div class="checkout-content">
         <section class="checkout-form-section">
-            <form action="/order/submit" method="post" class="address-form" id="checkoutForm" onsubmit="return validateAndSubmitForm(event)">
+            <form action="/order/submit" method="post" class="address-form" id="checkoutForm"
+                  onsubmit="return validateAndSubmitForm(event)">
 
                 <div class="checkout-header-flex">
                     <div>
@@ -19,36 +22,74 @@
                             <p>Wprowadź swoje dane lub wybierz istniejący adres!</p>
                         </div>
                     </div>
+                    <div class="address-management-container">
+                        <div id="select-mode-wrapper" th:if="${not #lists.isEmpty(userAddresses)}">
+                            <label for="selectedAddressId">Wybierz zapisany adres:</label>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <select id="selectedAddressId" name="selectedAddressId" class="form-control"
+                                        onchange="handleAddressSelection()">
+                                    <option value="">Nowy adres</option>
 
-                    <div class="saved-address-wrapper" th:if="${not #lists.isEmpty(userAddresses)}">
-                        <label for="selectedAddressId">Wybierz zapisany adres:</label>
-                        <select id="selectedAddressId" name="selectedAddressId" onchange="handleAddressSelection()">
-                            <option value="">-- Nowy adres --</option>
+                                    <option th:each="addr : ${userAddresses}"
+                                            th:value="${addr.addressId}"
+                                            th:data-name="${addr.name}"
+                                            th:data-surname="${addr.surname}"
+                                            th:data-street="${addr.streetAddress}"
+                                            th:data-building="${addr.houseNumberAddress}"
+                                            th:data-apt="${addr.apartmentNumberAddress}"
+                                            th:data-zip="${addr.code}"
+                                            th:data-city="${addr.cityAddress}"
+                                            th:data-country="${addr.countryAddress}"
+                                            th:text="${addr.streetAddress + ' ' + addr.houseNumberAddress +
+                                                                (!#strings.isEmpty(addr.apartmentNumberAddress) ? '/'
+                                                                + addr.apartmentNumberAddress : '') +', ' + addr.code}">
+                                    </option>
+                                </select>
+                                <button type="button" class="btn-toggle-delete" onclick="toggleDeleteMode(true)"
+                                        title="Usuń adresy">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="#d32f2f">
+                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
 
-                            <option th:each="addr : ${userAddresses}"
-                                    th:value="${addr.addressId}"
-                                    th:data-name="${addr.name}"
-                                    th:data-surname="${addr.surname}"
-                                    th:data-street="${addr.streetAddress}"
-                                    th:data-building="${addr.houseNumberAddress}"
-                                    th:data-apt="${addr.apartmentNumberAddress}"
-                                    th:data-zip="${addr.code}"
-                                    th:data-city="${addr.cityAddress}"
-                                    th:data-country="${addr.countryAddress}"
-                                    th:text="${addr.streetAddress + ' ' + addr.houseNumberAddress +
-                                    (!#strings.isEmpty(addr.apartmentNumberAddress) ? '/'
-                                    + addr.apartmentNumberAddress : '') +', ' + addr.code}">
-                            </option>
-                        </select>
+                        <div id="delete-mode-wrapper" style="display: none;">
+                            <div class="delete-mode-header">
+                                <span class="delete-mode-title">Wybierz adres do usunięcia:</span>
+                                <button type="button" class="btn-back-mode" onclick="toggleDeleteMode(false)">Wróć
+                                </button>
+                            </div>
+
+                            <ul class="delete-address-list">
+                                <li th:each="addr : ${userAddresses}"
+                                    th:id="'del-item-' + ${addr.addressId}"
+                                    class="delete-address-item"
+                                    th:attr="data-id=${addr.addressId}, data-text=${addr.streetAddress + ' ' + addr.houseNumberAddress +
+                                    (!#strings.isEmpty(addr.apartmentNumberAddress) ? '/' + addr.apartmentNumberAddress : '') + ', ' + addr.code}"
+                                    onclick="confirmAddressDeletion(this)">
+
+                                                        <span th:text="${addr.streetAddress + ' ' + addr.houseNumberAddress +
+                                                                (!#strings.isEmpty(addr.apartmentNumberAddress) ? '/'
+                                                                + addr.apartmentNumberAddress : '') +', ' + addr.code}"></span>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
+
+
                 </div>
 
                 <div class="form-group">
-                    <input type="text" id="firstName" name="firstName" placeholder="imię" class="new-addr-input" required>
+                    <input type="text" id="firstName" name="firstName" placeholder="imię" class="new-addr-input"
+                           required>
                 </div>
 
                 <div class="form-group">
-                    <input type="text" id="lastName" name="lastName" placeholder="nazwisko" class="new-addr-input" required>
+                    <input type="text" id="lastName" name="lastName" placeholder="nazwisko" class="new-addr-input"
+                           required>
                 </div>
 
                 <div class="form-row phone-row">
@@ -60,7 +101,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="nr komórkowy" class="new-addr-input" required>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="nr komórkowy"
+                               class="new-addr-input" required>
                     </div>
                 </div>
 
@@ -78,7 +120,8 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <input type="text" id="buildingNo" name="buildingNo" placeholder="nr budynku" class="new-addr-input" required>
+                        <input type="text" id="buildingNo" name="buildingNo" placeholder="nr budynku"
+                               class="new-addr-input" required>
                     </div>
                     <div class="form-group">
                         <input type="text" id="aptNo" name="aptNo" placeholder="nr mieszkania">
@@ -87,10 +130,12 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <input type="text" id="zipCode" name="zipCode" placeholder="kod pocztowy" class="new-addr-input" required>
+                        <input type="text" id="zipCode" name="zipCode" placeholder="kod pocztowy" class="new-addr-input"
+                               required>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="city" name="city" placeholder="miejscowość" class="new-addr-input" required>
+                        <input type="text" id="city" name="city" placeholder="miejscowość" class="new-addr-input"
+                               required>
                     </div>
                 </div>
 

@@ -68,4 +68,16 @@ public class AddressServices {
         Users user = usersService.getCurrentUser();
         return addressRepository.findAllByUser_UserId(user.getUserId());
     }
+
+    @Transactional
+    public boolean deleteAddress(Integer id) {
+        Users user = usersService.getCurrentUser();
+        long addressDelete = addressRepository.deleteAddressByUser_UserIdAndAddressId(user.getUserId(), id);
+
+        if (addressDelete > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
