@@ -1,13 +1,15 @@
 package com.diplom_proj.shop.dto;
 
+import lombok.Data;
+
+import java.time.LocalDateTime;
+@Data
 public class ChatMessageDTO {
     private String sender;
     private String content;
-    public ChatMessageDTO() {
-    }
-    public String getSender() { return sender; }
-    public void setSender(String sender) { this.sender = sender; }
+    private String timestamp;
 
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
+    public ChatMessageDTO() {
+        this.timestamp = LocalDateTime.now().toString();
+    }
 }

@@ -284,6 +284,9 @@ function startChat(senderEmail) {
     // Оодальное окно
     document.getElementById('chatModal').style.display = 'block';
 
+    // Прогрузка истории если она есть
+    loadChatHistory()
+
     // проверка на подключение
     if (stompClient === null) {
         // Подключение к эндпоинту в WebSocketConfig
@@ -399,4 +402,23 @@ function dragChat(elmnt) {
     }
 }
 
+// История
+function loadChatHistory() {
+    fetch('/chat/history')
+        .then(response => {
+            if (!response.ok) throw new Error('History upload error');
+            return response.json();
+        })
+        .then(messages => {
+            let chatArea = document.getElementById('chatArea');
+            chatArea.innerHTML = ''; // Очищаем окна
+
+            // Проходи  по к сообщениям и восстановление
+            messages.forEach(msg => {
+
+                showMessage(msg.sender, msg.content);
+            });
+        })
+        .catch(error => console.error("Error loading chat history:", error));
+}
 // CHAT             ↑↑↑↑↑

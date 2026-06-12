@@ -28,6 +28,8 @@ public class SellersController {
     @GetMapping("/seller/home")
     public String SellerHome(Model model) {
         UsersDTO user = usersService.dtouser();
+//        List<ChatMessageDTO> chatHistory = redisChatService.getChatHistory();
+//        model.addAttribute("history", chatHistory);
         model.addAttribute("currentUser", user);
         return "sellerHomePage";
     }
