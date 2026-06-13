@@ -46,7 +46,7 @@ public class UsersController {
             return "register";
         }
         usersService.addNewKlien(users);
-        return "home";
+        return "redirect:/strona";
     }
 
     @GetMapping("/login")
