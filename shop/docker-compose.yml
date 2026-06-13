@@ -1,7 +1,27 @@
 version: '3.8'
 services:
 
+  #  Spring Boot              ↓↓↓↓↓
+
+  app:
+    build: . # Точта означает что Dockerfile лежит по этому-же пути
+    container_name: shop_app
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mysql
+      - redis
+    environment:
+      # Перезапись настроек application.properties под Docker-сеть
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/diplom_db_shop_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATA_REDIS_HOST=redis
+    restart: unless-stopped
+
+  #  Spring Boot              ↑↑↑↑↑
+
+
   #  Настройки для чата       ↓↓↓↓↓
+
   redis:
     image: redis:7-alpine
     container_name: shop_redis
@@ -17,7 +37,8 @@ services:
   #  Настройки для чата       ↑↑↑↑↑
 
 
-  #  Настройки для SQL       ↓↓↓↓↓
+  #  Настройки для SQL        ↓↓↓↓↓
+
   mysql:
     image: mysql:8.0
     container_name: shop_mysql
@@ -27,7 +48,7 @@ services:
       MYSQL_PASSWORD: diplomdb
       MYSQL_ROOT_PASSWORD: rootpassword # Пароль суперпользователя
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       #   файлы из папки выполнятся при создании контейнера
       - ./docker/sql:/docker-entrypoint-initdb.d
@@ -36,4 +57,5 @@ services:
     restart: unless-stopped
 volumes:
   mysql_data:
-  #  Настройки для SQL       ↑↑↑↑↑
+
+  #  Настройки для SQL        ↑↑↑↑↑
